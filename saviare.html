@@ -1,108 +1,228 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>IPO – Saviare LTDA</title>
-<link rel="icon" href="data:image/svg+xml;utf8,
-  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-    <text y='0.9em' font-size='90'>🍀</text>
-  </svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe de Peligro Operacional - Saviare</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* === Mantenemos todo tu CSS original === */
-/* ... Todo el CSS que ya tenías ... */
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+
+  body {
+    background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
+    color: #2E7D32;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    width: 100%;
+    background: #66BB6A;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header h1 { font-weight: 600; font-size: 1.8rem; }
+  header img { height: 50px; }
+
+  /* Animación del avión */
+  #avion {
+    position: absolute;
+    top: 10px;
+    left: -100px;
+    width: 80px;
+    animation: volar 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes volar {
+    0% { left: -100px; transform: rotate(0deg); }
+    50% { left: 50%; transform: rotate(10deg); }
+    100% { left: 110%; transform: rotate(0deg); }
+  }
+
+  main {
+    margin: 2rem auto;
+    max-width: 650px;
+    width: 90%;
+  }
+
+  main h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 1.9rem;
+  }
+
+  form { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  /* Tarjetas de campo */
+  .field-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .field-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+
+  .field-card label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .field-card input, .field-card select, .field-card textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid #A5D6A7;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .field-card input:focus, .field-card select:focus, .field-card textarea:focus {
+    border-color: #2E7D32;
+    outline: none;
+    box-shadow: 0 0 8px rgba(46,125,50,0.5);
+  }
+
+  button {
+    background: #2E7D32;
+    color: white;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background: #1B5E20;
+    transform: scale(1.05);
+  }
+
+  .terms {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 2rem;
+    background: #f1f8f1;
+    padding: 1rem;
+    border-radius: 12px;
+    line-height: 1.4;
+  }
+
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 1rem;
+    color: #2E7D32;
+    font-weight: 600;
+  }
+
+  /* Responsive */
+  @media(max-width: 640px){
+    header h1 { font-size: 1.4rem; }
+    main { margin: 1rem auto; }
+    #avion { width: 60px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- Bienvenida -->
-<div id="welcomeOverlay">
-  <div class="welcome-inner">
-    <img src="Avion.png" class="plane" alt="Avión">
-    <h2 class="welcome-title"><span class="clover">🍀</span> ¡Bienvenido al sistema IPO de Saviare LTDA!</h2>
+<header>
+  <h1>SAVIARE - IPO</h1>
+  <img src="Trebol.png" alt="Trébol">
+  <img src="Avion.png" alt="Avión" id="avion">
+</header>
+
+<main>
+  <h2>Informe de Peligro Operacional (IPO)</h2>
+  <form id="ipoForm">
+
+    <div class="field-card">
+      <label>Fecha del peligro</label>
+      <input type="date" name="fecha" required>
+    </div>
+
+    <div class="field-card">
+      <label>Lugar del peligro / Fase de vuelo</label>
+      <input type="text" name="lugar" placeholder="Ej: Pista de despegue" required>
+    </div>
+
+    <div class="field-card">
+      <label>Base</label>
+      <select name="base" required>
+        <option value="">Seleccione una base</option>
+        <option value="Villavicencio">Villavicencio</option>
+        <option value="Mitú">Mitú</option>
+      </select>
+    </div>
+
+    <div class="field-card">
+      <label>Nombre</label>
+      <input type="text" name="nombre" required>
+    </div>
+
+    <div class="field-card">
+      <label>Cargo</label>
+      <input type="text" name="cargo" required>
+    </div>
+
+    <div class="field-card">
+      <label>Descripción del peligro / error humano</label>
+      <textarea name="descripcion" rows="4" placeholder="Describa brevemente el incidente" required></textarea>
+    </div>
+
+    <button type="submit">Enviar Informe</button>
+  </form>
+
+  <div class="terms">
+    SAVIARE LTDA, promueve e incentiva los Informes de Peligros Operacional (IPO) de forma voluntaria y oportuna de cada una de las condiciones latentes de inseguridad y riesgos que puedan comprometer todas las actividades de seguridad operacional. Garantizando la confidencialidad, protección y discreción de los empleados, por ello no generará acciones legales disciplinarias en contra de la persona que reporte voluntariamente cualquier condición de inseguridad en forma impresa o verbal a menos que incurran en actos ilegales deliberados, negligencia o violaciones a las normas, regulaciones o procedimientos estandarizados.
   </div>
-</div>
+</main>
 
-<div class="wrap">
-  <!-- Encabezado -->
-  <div class="card" style="margin-bottom:14px;">
-    <header class="page">
-      <div class="brand" aria-hidden="true">🍀</div>
-      <div>
-        <h1>Informe de Peligro Operacional (IPO)</h1>
-        <p>Reporte moderno, confidencial y oportuno para la seguridad operacional.</p>
-      </div>
-    </header>
-  </div>
+<footer>
+  © 2025 SAVIARE LTDA
+</footer>
 
-  <!-- Formulario -->
-  <div class="card">
-    <form id="ipoForm" novalidate>
-      <!-- Formulario igual que antes -->
-      <div class="grid">
-        <div>
-          <label for="fechaPeligro">Fecha del peligro</label>
-          <input id="fechaPeligro" name="fechaPeligro" type="date" required />
-        </div>
-        <div>
-          <label for="base">Base</label>
-          <select id="base" name="base" required>
-            <option value="" disabled selected>Selecciona una base</option>
-            <option value="Villavicencio">Villavicencio</option>
-            <option value="Mitú">Mitú</option>
-          </select>
-        </div>
-        <div class="grid-1">
-          <label for="lugar">Lugar del peligro / fase de vuelo</label>
-          <input id="lugar" name="lugar" type="text" placeholder="Ej: Plataforma / Rodaje / Despegue…" required />
-        </div>
-        <div>
-          <label for="nombre">Nombre</label>
-          <input id="nombre" name="nombre" type="text" placeholder="Opcional" />
-        </div>
-        <div>
-          <label for="cargo">Cargo</label>
-          <input id="cargo" name="cargo" type="text" placeholder="Ej: Piloto / Técnico / Coordinador…" />
-        </div>
-        <div class="grid-1">
-          <label for="descripcion">Descripción del peligro / error humano</label>
-          <textarea id="descripcion" name="descripcion" placeholder="Describe lo ocurrido…" required></textarea>
-        </div>
-        <div class="grid-1">
-          <label for="files">Evidencia (PDF/imagen/video, máx 10 MB c/u)</label>
-          <div class="file">
-            <input id="files" name="files" type="file" multiple accept="image/*,application/pdf,video/*" />
-          </div>
-        </div>
-      </div>
+<script>
+  const form = document.getElementById('ipoForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const obj = {};
+    data.forEach((value, key) => obj[key] = value);
 
-      <div class="terms" style="margin-top:10px;">
-        <p>
-          <strong>Términos y condiciones:</strong><br>
-          SAVIARE LTDA, promueve e incentiva los Informes de Peligros Operacional (IPO) de forma voluntaria y oportuna...
-        </p>
-        <div class="row">
-          <input id="acepto" type="checkbox" required />
-          <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y condiciones.</label>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button type="submit">Enviar reporte 🍀</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- Overlay de carga -->
-<div id="overlay" role="alert" aria-live="polite">
-  <div>⏳ Enviando reporte…</div>
-  <div id="progressWrap"><div id="bar"></div></div>
-  <div id="percent">0%</div>
-</div>
-
-<!-- JS externo -->
-<script src="main.js" defer></script>
+    fetch('https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec', {
+      method: 'POST',
+      body: JSON.stringify(obj),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(res => {
+      alert('¡Gracias! Su IPO ha sido registrado con éxito.');
+      form.reset();
+    })
+    .catch(err => {
+      alert('Error al enviar el formulario, intente nuevamente.');
+      console.error(err);
+    });
+  });
+</script>
 
 </body>
 </html>
