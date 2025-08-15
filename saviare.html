@@ -3,25 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bienvenido a Saviare</title>
+<title>Saviare - IPO</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Montserrat', sans-serif; }
-  body { background: #e8f5e9; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; }
-  #welcomeScreen { display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  body { background:#e8f5e9; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow-x:hidden; }
+
+  /* Bienvenida */
+  #welcomeScreen {
+    position:absolute; width:100%; height:100%; background:linear-gradient(135deg,#ffffff 0%,#e8f5e9 100%);
+    display:flex; flex-direction:column; justify-content:center; align-items:center; transition: opacity 1s ease; z-index:10;
+  }
   #welcomeScreen h1 { color:#2E7D32; font-size:2.5rem; margin-bottom:2rem; text-align:center; }
   #avion { width:100px; position:relative; left:-150px; animation:vuelo 3s ease-in-out forwards; }
   @keyframes vuelo { 0% { left:-150px; } 50% { left:50%; transform:rotate(10deg); } 100% { left:120%; transform:rotate(0deg); } }
+
+  /* Cabecera */
+  header { width:100%; background:#66BB6A; color:white; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; border-bottom-left-radius:20px; border-bottom-right-radius:20px; position:relative; overflow:hidden; }
+  header h1 { font-weight:600; font-size:1.8rem; }
+  header .trebol { font-size:2rem; }
+
+  /* Formulario */
+  main { background:white; margin:2rem; padding:2rem; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.1); max-width:650px; width:90%; }
+  main h2 { text-align:center; margin-bottom:2rem; font-weight:600; font-size:1.9rem; }
+  form { display:flex; flex-direction:column; gap:1.5rem; }
+  .field-card { background:#ffffff; border-radius:15px; padding:1rem 1.5rem; box-shadow:0 6px 15px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+  .field-card:hover { transform: translateY(-5px); box-shadow:0 10px 20px rgba(0,0,0,0.15); }
+  .field-card label { font-weight:600; margin-bottom:0.5rem; display:block; }
+  .field-card input, .field-card select, .field-card textarea { width:100%; padding:0.7rem 1rem; border:2px solid #A5D6A7; border-radius:10px; font-size:1rem; transition: all 0.3s ease; }
+  .field-card input:focus, .field-card select:focus, .field-card textarea:focus { border-color:#2E7D32; outline:none; box-shadow:0 0 8px rgba(46,125,50,0.5); }
+  button { background:#2E7D32; color:white; padding:1rem; font-size:1.2rem; border:none; border-radius:15px; cursor:pointer; transition: background 0.3s, transform 0.2s; }
+  button:hover { background:#1B5E20; transform:scale(1.05); }
+
+  .terms { font-size:0.85rem; color:#555; margin-top:2rem; background:#f1f8f1; padding:1rem; border-radius:12px; line-height:1.4; }
+  footer { margin-top:auto; text-align:center; padding:1rem; color:#2E7D32; font-weight:600; }
+
 </style>
 </head>
 <body>
+
+<!-- Pantalla de bienvenida -->
 <div id="welcomeScreen">
   <h1>Bienvenido a SAVIARE</h1>
   <img src="Avion.png" alt="Avión" id="avion">
 </div>
+
+<!-- Cabecera -->
+<header>
+  <h1>SAVIARE - IPO</h1>
+  <div class="trebol">🍀</div>
+</header>
+
+<main>
+  <h2>Informe de Peligro Operacional (IPO)</h2>
+  <form id="ipoForm">
+    <div class="field-card">
+      <label>Fecha del peligro</label>
+      <input type="date" name="fecha" required>
+    </div>
+    <div class="field-card">
+      <label>Lugar del peligro / Fase de vuelo</label>
+      <input type="text" name="lugar" placeholder="Ej: Pista de despegue" required>
+    </div>
+    <div class="field-card">
+      <label>Base</label>
+      <select name="base" required>
+        <option value="">Seleccione una base</option>
+        <option value="Villavicencio">Villavicencio</option>
+        <option value="Mitú">Mitú</option>
+      </select>
+    </div>
+    <div class="field-card">
+      <label>Nombre</label>
+      <input type="text" name="nombre" required>
+    </div>
+    <div class="field-card">
+      <label>Cargo</label>
+      <input type="text" name="cargo" required>
+    </div>
+    <div class="field-card">
+      <label>Descripción del peligro / error humano</label>
+      <textarea name="descripcion" rows="4" placeholder="Describa brevemente el incidente" required></textarea>
+    </div>
+    <button type="submit">Enviar Informe</button>
+  </form>
+
+  <div class="terms">
+    SAVIARE LTDA promueve e incentiva los Informes de Peligros Operacional (IPO) de forma voluntaria y confidencial, garantizando que no habrá acciones disciplinarias salvo en casos de negligencia o violación de normas.
+  </div>
+</main>
+
+<footer>© 2025 SAVIARE LTDA</footer>
+
 <script>
+  // Ocultar bienvenida después de 4 segundos
   setTimeout(() => {
-    window.location.href = 'formulario.html';
-  }, 4000);
+    const screen = document.getElementById('welcomeScreen');
+    screen.style.opacity='0';
+    setTimeout(()=>{ screen.style.display='none'; },1000);
+  },4000);
+
+  // Enviar formulario
+  const form = document.getElementById('ipoForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const obj = {};
+    data.forEach((value,key)=> obj[key]=value);
+
+    fetch('https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec',{
+      method:'POST',
+      body: JSON.stringify(obj),
+      headers:{'Content-Type':'application/json'}
+    })
+    .then(res => res.json())
+    .then(res => {
+      alert('¡Gracias! Su IPO ha sido registrado con éxito.');
+      form.reset();
+    })
+    .catch(err => {
+      alert('Error al enviar el formulario, intente nuevamente.');
+      console.error(err);
+    });
+  });
 </script>
+
 </body>
 </html>
