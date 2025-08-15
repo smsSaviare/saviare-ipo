@@ -13,7 +13,6 @@
     padding: 0;
     text-align: center;
   }
-
   .bienvenida {
     font-size: 2em;
     margin-top: 20vh;
@@ -22,7 +21,6 @@
     border-right: 3px solid white;
     display: inline-block;
   }
-
   .avion {
     width: 80px;
     vertical-align: middle;
@@ -30,7 +28,6 @@
     transform: translateX(-50px);
     transition: all 1s ease;
   }
-
   form {
     max-width: 600px;
     margin: 30px auto;
@@ -39,7 +36,6 @@
     border-radius: 10px;
     display: none;
   }
-
   input, select, textarea {
     width: 100%;
     padding: 8px;
@@ -47,7 +43,6 @@
     border: none;
     border-radius: 5px;
   }
-
   button {
     padding: 10px 20px;
     background: #28a745;
@@ -56,7 +51,6 @@
     border-radius: 5px;
     cursor: pointer;
   }
-
   button:hover {
     background: #218838;
   }
@@ -109,10 +103,19 @@
 <script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
 
-// Animación bienvenida
+// Texto de bienvenida
 const texto = "¡Bienvenido al sistema IPO de Saviare!";
 let i = 0;
 const velocidad = 70;
+
+// Evita que el texto se repita si ya se mostró antes
+if (sessionStorage.getItem("formMostrado")) {
+  document.getElementById("ipoForm").style.display = "block";
+  document.getElementById("textoBienvenida").style.display = "none";
+  document.getElementById("avionImg").style.display = "none";
+} else {
+  escribirTexto();
+}
 
 function escribirTexto() {
   if (i < texto.length) {
@@ -120,17 +123,21 @@ function escribirTexto() {
     i++;
     setTimeout(escribirTexto, velocidad);
   } else {
-    const avion = document.getElementById("avionImg");
-    avion.style.opacity = 1;
-    avion.style.transform = "translateX(0)";
-    setTimeout(() => {
-      document.getElementById("ipoForm").style.display = "block";
-      document.getElementById("textoBienvenida").style.display = "none";
-      avion.style.display = "none";
-    }, 2000);
+    mostrarAvion();
   }
 }
-escribirTexto();
+
+function mostrarAvion() {
+  const avion = document.getElementById("avionImg");
+  avion.style.opacity = 1;
+  avion.style.transform = "translateX(0)";
+  setTimeout(() => {
+    sessionStorage.setItem("formMostrado", true);
+    document.getElementById("ipoForm").style.display = "block";
+    document.getElementById("textoBienvenida").style.display = "none";
+    avion.style.display = "none";
+  }, 2000);
+}
 
 // Envío formulario
 document.getElementById("ipoForm").addEventListener("submit", e => {
