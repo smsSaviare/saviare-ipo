@@ -1,403 +1,173 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>IPO – Saviare LTDA</title>
-<link rel="icon" href="data:image/svg+xml;utf8,
-  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-    <text y='0.9em' font-size='90'>🍀</text>
-  </svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema IPO - Saviare</title>
 <style>
-  :root{
-    --green-1:#00b09b;
-    --green-2:#96c93d;
-    --green-3:#0da574;
-    --text:#ffffff;
-    --glass:rgba(255,255,255,.12);
-    --glass-strong:rgba(255,255,255,.18);
-    --shadow:0 10px 30px rgba(0,0,0,.18);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    color:var(--text);
-    background:
-      radial-gradient(1000px 600px at -10% -10%, rgba(255,255,255,.08), transparent 40%),
-      radial-gradient(800px 500px at 110% 0%, rgba(0,0,0,.12), transparent 45%),
-      linear-gradient(135deg,var(--green-1),var(--green-2));
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
-
-  /* Bienvenida (no bloquea interacción) */
-  #welcomeOverlay{
-    position:fixed; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    padding:24px; text-align:center;
-    background:linear-gradient(135deg, rgba(0,176,155,.9), rgba(150,201,61,.92));
-    z-index:999;
-    pointer-events:none;           /* <- no bloquea el formulario */
-    opacity:1; transition:opacity .9s ease;
-    overflow:hidden;
-  }
-  #welcomeOverlay.fade-out{ opacity:0; }
-
-  .welcome-inner{
-    position:relative;
-    max-width:900px; width:100%;
-    padding:32px 16px;
-  }
-  .welcome-title{
-    font-size:clamp(20px,4.5vw,36px);
-    font-weight:800;
-    letter-spacing:.3px;
-    margin:0;
-    display:flex; gap:.5rem; align-items:center; justify-content:center;
-    opacity:0; animation:fadeInTitle 1.2s ease .3s forwards;
-    text-shadow:0 3px 12px rgba(0,0,0,.25);
-  }
-  .welcome-title .clover{filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
-  @keyframes fadeInTitle{ to{opacity:1} }
-
-  /* Avión */
-  .plane{
-    position:absolute;
-    bottom:10vh;                  /* más abajo para que se vea */
-    left:-30vw;                   /* arranca fuera de pantalla */
-    width:min(140px,26vw);
-    filter:drop-shadow(0 18px 18px rgba(0,0,0,.35));
-    opacity:.95;
-    transform:translateX(0) translateY(0) rotate(0);
-    animation:planeFly 3.2s ease-in-out .15s forwards;
-  }
-  @keyframes planeFly{
-    0%   { transform:translateX(0) translateY(0) rotate(0deg); }
-    70%  { transform:translateX(115vw) translateY(-6vh) rotate(14deg); }
-    100% { transform:translateX(140vw) translateY(-10vh) rotate(18deg); opacity:0; }
-  }
-
-  /* Contenedor principal */
-  .wrap{
-    width:min(940px,92vw);
-    margin: clamp(20px, 4vh, 36px) auto 40px;
-  }
-  .card{
-    background:var(--glass);
-    border:1px solid rgba(255,255,255,.16);
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(10px);
-    border-radius:18px;
-    padding:20px;
-  }
-  header.page{
-    display:flex; align-items:center; gap:12px;
-    margin-bottom:14px;
-  }
-  header.page .brand{
-    width:36px; height:36px; display:grid; place-items:center;
-    background:var(--glass-strong);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:10px;
-  }
-  header.page h1{
-    font-size:clamp(20px,3.4vw,28px);
-    margin:0;
-    font-weight:800;
-    letter-spacing:.2px;
-  }
-  header.page p{
-    margin:2px 0 0; opacity:.9; font-size:.95rem;
-  }
-
-  /* Formulario */
-  form{ margin-top:8px; }
-  .grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-  }
-  .grid-1{ display:grid; grid-template-columns:1fr; gap:14px; }
-  @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-
-  label{ font-weight:700; font-size:.92rem; margin-bottom:6px; display:block; }
-  input[type="text"], input[type="date"], select, textarea{
-    width:100%;
-    padding:12px 12px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.28);
-    outline:none;
-    color:var(--text);
-    background:rgba(255,255,255,.08);
-  }
-  textarea{ min-height:120px; resize:vertical; }
-
-  .file{
-    border:1px dashed rgba(255,255,255,.35);
-    border-radius:12px;
-    padding:14px;
-    background:rgba(255,255,255,.06);
-  }
-
-  .terms{
-    background:rgba(0,0,0,.22);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:14px;
-    padding:12px 14px;
-    font-size:.92rem;
-    line-height:1.35rem;
-  }
-  .terms p{ margin:.2rem 0 .6rem; }
-  .terms .row{ display:flex; gap:8px; align-items:flex-start; }
-  .terms input[type="checkbox"]{ margin-top:3px; }
-
-  .actions{ margin-top:8px; }
-  button{
-    width:100%;
-    padding:13px 16px;
-    border:none; border-radius:12px;
-    font-weight:800; letter-spacing:.3px;
-    color:#0b1f16;
-    background:linear-gradient(135deg,#e8ffb4,#8ef8c2);
-    cursor:pointer;
-    box-shadow:0 8px 18px rgba(0,0,0,.18);
-    transition:transform .08s ease, filter .2s ease;
-  }
-  button:hover{ filter:brightness(1.06); }
-  button:active{ transform:translateY(1px) scale(.998); }
-
-  /* Overlay de carga */
-  #overlay{
-    position:fixed; inset:0; display:none;
-    background:rgba(0,0,0,.65);
-    color:#fff; z-index:1000;
-    align-items:center; justify-content:center; flex-direction:column;
-    padding:20px; text-align:center;
-  }
-  #progressWrap{
-    width:min(560px,86vw); margin-top:14px;
-    background:#eaeaea; border-radius:10px; overflow:hidden;
-    box-shadow:inset 0 0 8px rgba(0,0,0,.12);
-  }
-  #bar{ height:14px; width:0%; background:#00d2a0; transition:width .25s ease; }
-  #percent{ margin-top:6px; font-size:.9rem; opacity:.9; }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #001f3f;
+        color: white;
+        text-align: center;
+        overflow-x: hidden;
+    }
+    h1 {
+        font-size: 2.5em;
+        margin-top: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: .15em solid orange;
+        animation: typing 4s steps(50, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+    }
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: orange; }
+    }
+    #plane {
+        width: 100px;
+        position: absolute;
+        top: 150px;
+        left: -150px;
+        animation: fly 4s forwards;
+        animation-delay: 0.5s;
+    }
+    @keyframes fly {
+        0% { left: -150px; opacity: 0; }
+        50% { opacity: 1; }
+        100% { left: calc(50% - 50px); opacity: 1; }
+    }
+    form {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        margin: 30px auto;
+        text-align: left;
+    }
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+    input, textarea, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: none;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px 15px;
+        background-color: orange;
+        border: none;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    button:hover {
+        background-color: darkorange;
+    }
 </style>
 </head>
 <body>
 
-<!-- Bienvenida -->
-<div id="welcomeOverlay">
-  <div class="welcome-inner">
-    <img src="Avion.png" class="plane" alt="Avión">
-    <h2 class="welcome-title"><span class="clover">🍀</span> ¡Bienvenido al sistema IPO de Saviare LTDA!</h2>
-  </div>
-</div>
+<h1 id="welcome">¡Bienvenido al sistema IPO de Saviare!</h1>
+<img id="plane" src="Avion.png" alt="Avión">
 
-<div class="wrap">
-  <!-- Encabezado -->
-  <div class="card" style="margin-bottom:14px;">
-    <header class="page">
-      <div class="brand" aria-hidden="true">🍀</div>
-      <div>
-        <h1>Informe de Peligro Operacional (IPO)</h1>
-        <p>Reporte moderno, confidencial y oportuno para la seguridad operacional.</p>
-      </div>
-    </header>
-  </div>
+<form id="ipoForm">
+    <label>Fecha del peligro:</label>
+    <input type="date" name="fechaPeligro" required>
 
-  <!-- Formulario -->
-  <div class="card">
-    <form id="ipoForm" novalidate>
-      <div class="grid">
-        <div>
-          <label for="fechaPeligro">Fecha del peligro</label>
-          <input id="fechaPeligro" name="fechaPeligro" type="date" required />
-        </div>
+    <label>Lugar del peligro / fase de vuelo:</label>
+    <input type="text" name="lugar" required>
 
-        <div>
-          <label for="base">Base</label>
-          <select id="base" name="base" required>
-            <option value="" disabled selected>Selecciona una base</option>
-            <option value="Villavicencio">Villavicencio</option>
-            <option value="Mitú">Mitú</option>
-          </select>
-        </div>
+    <label>Base:</label>
+    <input type="text" name="base" required>
 
-        <div class="grid-1">
-          <label for="lugar">Lugar del peligro / fase de vuelo</label>
-          <input id="lugar" name="lugar" type="text" placeholder="Ej: Plataforma / Rodaje / Despegue…" required />
-        </div>
+    <label>Nombre:</label>
+    <input type="text" name="nombre">
 
-        <div>
-          <label for="nombre">Nombre</label>
-          <input id="nombre" name="nombre" type="text" placeholder="Opcional" />
-        </div>
+    <label>Cargo:</label>
+    <input type="text" name="cargo">
 
-        <div>
-          <label for="cargo">Cargo</label>
-          <input id="cargo" name="cargo" type="text" placeholder="Ej: Piloto / Técnico / Coordinador…" />
-        </div>
+    <label>Descripción del peligro / error humano:</label>
+    <textarea name="descripcion" rows="4" required></textarea>
 
-        <div class="grid-1">
-          <label for="descripcion">Descripción del peligro / error humano</label>
-          <textarea id="descripcion" name="descripcion" placeholder="Describe lo ocurrido…" required></textarea>
-        </div>
+    <label>Adjuntar evidencia (opcional):</label>
+    <input type="file" name="files" multiple>
 
-        <div class="grid-1">
-          <label for="files">Evidencia (PDF/imagen/video, máx 10 MB c/u)</label>
-          <div class="file">
-            <input id="files" name="files" type="file" multiple accept="image/*,application/pdf,video/*" />
-          </div>
-        </div>
-      </div>
+    <label>
+        <input type="checkbox" name="anonimo"> Enviar de forma anónima
+    </label>
+    <label>
+        <input type="checkbox" name="terminos" required> Acepto términos y condiciones
+    </label>
 
-      <div class="terms" style="margin-top:10px;">
-        <p>
-          <strong>Términos y condiciones:</strong><br>
-          SAVIARE LTDA, promueve e incentiva los Informes de Peligros Operacional (IPO) de forma
-          voluntaria y oportuna de cada una de las condiciones latentes de inseguridad y riesgos que
-          puedan comprometer todas las actividades de seguridad operacional. Garantizando la
-          confidencialidad, protección y discreción de los empleados, por ello no generará acciones
-          legales disciplinarias en contra de la persona que reporte voluntariamente cualquier
-          condición de inseguridad en forma impresa o verbal a menos que incurran en actos ilegales
-          deliberados, negligencia o violaciones a las normas, regulaciones o procedimientos
-          estandarizados.
-        </p>
-        <div class="row">
-          <input id="acepto" type="checkbox" required />
-          <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y condiciones.</label>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button type="submit">Enviar reporte 🍀</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- Overlay de carga -->
-<div id="overlay" role="alert" aria-live="polite">
-  <div>⏳ Enviando reporte…</div>
-  <div id="progressWrap"><div id="bar"></div></div>
-  <div id="percent">0%</div>
-</div>
+    <button type="submit">Enviar</button>
+</form>
 
 <script>
-  /* === CONFIG === */
-  const scriptURL = "https://script.google.com/macros/s/AKfycbw1tdbD8DWL2kSDwHm5uSqcuPLrAg_VOWx9_xaMXW41tgd5O3ELK6vLEi5Kw283g0i-/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbw1tdbD8DWL2kSDwHm5uSqcuPLrAg_VOWx9_xaMXW41tgd5O3ELK6vLEi5Kw283g0i-/exec";
 
-  /* === Bienvenida: fade-out automático, no bloquea UI === */
-  const welcome = document.getElementById('welcomeOverlay');
-  // Oculta con fade-out a los ~2.8s (coincide con el vuelo del avión)
-  setTimeout(() => {
-    if (welcome) {
-      welcome.classList.add('fade-out');
-      setTimeout(() => (welcome.style.display = 'none'), 900);
-    }
-  }, 2800);
-  // Fallback: si todo tarda, oculta a los 5s sí o sí
-  setTimeout(() => { if (welcome) welcome.style.display = 'none'; }, 5000);
-
-  /* === Utilidades de progreso === */
-  const overlay = document.getElementById('overlay');
-  const bar = document.getElementById('bar');
-  const percent = document.getElementById('percent');
-  function showOverlay(){ overlay.style.display = 'flex'; }
-  function hideOverlay(){ overlay.style.display = 'none'; bar.style.width = '0%'; percent.textContent = '0%'; }
-  function setProgress(p){ bar.style.width = p + '%'; percent.textContent = p + '%'; }
-
-  /* === Lector de archivos a base64 (secuencial para progreso) === */
-  function readFileAsBase64(file){
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  /* === Envío del formulario === */
-  document.getElementById('ipoForm').addEventListener('submit', async (e) => {
+document.getElementById("ipoForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    // Validación de checkbox
-    if (!document.getElementById('acepto').checked) {
-      alert('Debe aceptar los términos y condiciones.');
-      return;
-    }
-
     const form = e.target;
-    const filesInput = document.getElementById('files');
-
-    // Validaciones de tamaño
-    let totalSize = 0;
-    for (const f of filesInput.files) totalSize += f.size;
-    if (totalSize > 15 * 1024 * 1024) {
-      alert('El total de adjuntos supera 15 MB.');
-      return;
-    }
-
-    showOverlay();
-
-    // Convertir archivos a base64 con progreso (hasta 80%)
-    const files = [];
-    let uploaded = 0;
-    const maxEnc = Math.max(totalSize, 1); // evita div/0
-    for (const f of filesInput.files) {
-      if (f.size > 10 * 1024 * 1024) {
-        alert(`El archivo "${f.name}" excede 10 MB y se omitirá.`);
-        continue;
-      }
-      const dataUrl = await readFileAsBase64(f);
-      files.push({
-        name: f.name,
-        mimeType: f.type || 'application/octet-stream',
-        base64: dataUrl.split(',')[1]
-      });
-      uploaded += f.size;
-      const pct = Math.min(80, Math.round((uploaded / maxEnc) * 80));
-      setProgress(pct);
-    }
-
-    // Construir payload
-    const payload = {
-      fechaPeligro: form.fechaPeligro.value || '',
-      lugar: form.lugar.value || '',
-      base: form.base.value || '',
-      nombre: form.nombre.value || '',
-      cargo: form.cargo.value || '',
-      descripcion: form.descripcion.value || '',
-      terminos: document.getElementById('acepto').checked ? 'Sí' : 'No',
-      files
+    const data = {
+        fechaPeligro: form.fechaPeligro.value,
+        lugar: form.lugar.value,
+        base: form.base.value,
+        nombre: form.nombre.value,
+        cargo: form.cargo.value,
+        descripcion: form.descripcion.value,
+        anonimo: form.anonimo.checked,
+        terminos: form.terminos.checked ? "Sí" : "No",
+        files: []
     };
 
-    // Marcar 90% mientras enviamos
-    setProgress(90);
-
-    // Enviar (no-cors como en el proyecto que sí funciona)
-    try {
-      await fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(payload)
-      });
-      // no-cors => respuesta opaqua: asumimos OK si no hubo excepción
-      setProgress(100);
-      setTimeout(() => {
-        hideOverlay();
-        alert('✅ ¡Reporte enviado!');
-        form.reset();
-      }, 600);
-    } catch (err) {
-      console.error(err);
-      hideOverlay();
-      alert('❌ Error al enviar el reporte. Revisa tu conexión e inténtalo nuevamente.');
+    const fileInputs = form.files.files;
+    for (let i = 0; i < fileInputs.length; i++) {
+        const file = fileInputs[i];
+        const reader = new FileReader();
+        const base64 = await new Promise((resolve, reject) => {
+            reader.onload = () => resolve(reader.result.split(",")[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+        data.files.push({
+            name: file.name,
+            type: file.type,
+            base64: base64
+        });
     }
-  });
+
+    fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(res => res.text())
+    .then(txt => {
+        if (txt === "OK") {
+            alert("✅ Información enviada correctamente");
+            form.reset();
+        } else {
+            alert("⚠️ Error: " + txt);
+        }
+    })
+    .catch(err => {
+        alert("❌ Error al enviar: " + err);
+    });
+});
 </script>
+
 </body>
 </html>
