@@ -17,7 +17,7 @@
     --glass:rgba(255,255,255,.12);
     --glass-strong:rgba(255,255,255,.18);
     --shadow:0 10px 30px rgba(0,0,0,.18);
-    --ring:#b9ffd6;
+    --accent:#00d2a0;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -34,17 +34,16 @@
     align-items:center;
     overflow-x:hidden;
   }
-
   /* Glow suave animado del fondo */
   body::before, body::after{
     content:"";
     position:fixed;
     width:60vmax;height:60vmax;border-radius:50%;
-    filter:blur(90px);opacity:.15;z-index:-1;
+    filter:blur(90px);opacity:.12;z-index:-1;
     background:conic-gradient(from 120deg,#e8ffb4,transparent 40%,#8ef8c2 60%,transparent);
     animation:orbit 18s linear infinite;
   }
-  body::after{ animation-direction:reverse; opacity:.18; filter:blur(110px); }
+  body::after{ animation-direction:reverse; opacity:.16; filter:blur(110px); }
   @keyframes orbit{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion:reduce){
     .plane, body::before, body::after{ animation:none !important; }
@@ -61,7 +60,7 @@
     opacity:1; transition:opacity .9s ease;
     overflow:hidden;
   }
-  #welcomeOverlay.fade-out{ opacity:0; }
+  #welcomeOverlay.fade-out{ opacity:0; pointer-events:none; }
 
   .welcome-inner{
     position:relative;
@@ -76,7 +75,6 @@
     display:flex; gap:.5rem; align-items:center; justify-content:center;
     opacity:0; animation:fadeInTitle 1.2s ease .3s forwards;
     text-shadow:0 3px 12px rgba(0,0,0,.25);
-    color: #ffffff; /* letras blancas en welcome */
   }
   .welcome-title .clover{filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
   @keyframes fadeInTitle{ to{opacity:1} }
@@ -86,7 +84,7 @@
     position:absolute;
     bottom:10vh;                  /* más abajo para que se vea */
     left:-30vw;                   /* arranca fuera de pantalla */
-    width:min(140px,26vw);
+    width:min(160px,26vw);
     filter:drop-shadow(0 18px 18px rgba(0,0,0,.35));
     opacity:.95;
     transform:translateX(0) translateY(0) rotate(0);
@@ -120,6 +118,9 @@
     background:var(--glass-strong);
     border:1px solid rgba(255,255,255,.18);
     border-radius:12px;
+    font-weight:900;
+    color: #083f2b;
+    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
   }
   header.page h1{
     font-size:clamp(20px,3.4vw,28px);
@@ -136,7 +137,7 @@
     opacity:.9;
   }
   header.page p{
-    margin:10px 0 0; opacity:.9; font-size:.95rem;
+    margin:10px 0 0; opacity:.95; font-size:.95rem;
   }
 
   /* Formulario */
@@ -149,7 +150,7 @@
   .grid-1{ display:grid; grid-template-columns:1fr; gap:14px; }
   @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
 
-  label{ font-weight:700; font-size:.92rem; margin-bottom:6px; display:block; color: rgba(255,255,255,.95); }
+  label{ font-weight:700; font-size:.92rem; margin-bottom:6px; display:block; }
   input[type="text"], input[type="date"], select, textarea{
     width:100%;
     padding:12px 12px;
@@ -157,22 +158,22 @@
     border:1px solid rgba(255,255,255,.22);
     outline:none;
     color:var(--text);
-    background:rgba(255,255,255,.08);
+    background:rgba(255,255,255,.06);
     transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
   }
   input::placeholder, textarea::placeholder{ color:rgba(255,255,255,.65); }
   input:focus, select:focus, textarea:focus{
     border-color:rgba(255,255,255,.35);
-    box-shadow:0 0 0 3px rgba(185,255,214,.28);
-    background:rgba(255,255,255,.12);
+    box-shadow:0 0 0 6px rgba(0,210,160,.06);
+    background:rgba(255,255,255,.10);
   }
-  textarea{ min-height:120px; resize:vertical; }
+  textarea{ min-height:140px; resize:vertical; }
 
   .file{
     border:1px dashed rgba(255,255,255,.35);
     border-radius:12px;
     padding:14px;
-    background:rgba(255,255,255,.06);
+    background:rgba(255,255,255,.05);
   }
 
   .terms{
@@ -183,11 +184,12 @@
     font-size:.92rem;
     line-height:1.35rem;
   }
-  .terms p{ margin:.2rem 0 .6rem; color:rgba(255,255,255,.95); }
+  .terms p{ margin:.2rem 0 .6rem; }
   .terms .row{ display:flex; gap:8px; align-items:flex-start; }
   .terms input[type="checkbox"]{ margin-top:3px; accent-color:#7ef5b7; }
 
-  .actions{ margin-top:8px; }
+  .actions{ margin-top:12px; display:grid; gap:10px; grid-template-columns:1fr; }
+
   button{
     width:100%;
     padding:13px 16px;
@@ -216,34 +218,38 @@
     background:#eaeaea; border-radius:10px; overflow:hidden;
     box-shadow:inset 0 0 8px rgba(0,0,0,.12);
   }
-  #bar{ height:14px; width:0%; background:#00d2a0; transition:width .25s ease; }
-  #percent{ margin-top:6px; font-size:.9rem; opacity:.9; }
+  #bar{ height:14px; width:0%; background:var(--accent); transition:width .25s ease; }
+  #percent{ margin-top:6px; font-size:.9rem; opacity:.9; color:#fff; }
+
+  /* small util */
+  .muted{ opacity:.85; font-size:.95rem; color: rgba(255,255,255,.92); }
+  .hint{ font-size:0.88rem; opacity:.85; color: rgba(255,255,255,.9); margin-top:6px }
 </style>
 </head>
 <body>
 
 <!-- Bienvenida -->
-<div id="welcomeOverlay">
+<div id="welcomeOverlay" role="presentation" aria-hidden="true">
   <div class="welcome-inner">
     <img src="Avion.png" class="plane" alt="Avión">
     <h2 class="welcome-title"><span class="clover">🍀</span> ¡Bienvenido al sistema IPO de Saviare LTDA!</h2>
   </div>
 </div>
 
-<div class="wrap">
+<div class="wrap" role="main">
   <!-- Encabezado -->
   <div class="card" style="margin-bottom:14px;">
     <header class="page">
       <div class="brand" aria-hidden="true">🍀</div>
       <div>
         <h1>Informe de Peligro Operacional (IPO)</h1>
-        <p>Reporte moderno, confidencial y oportuno para la seguridad operacional.</p>
+        <p class="muted">Reporte moderno, confidencial y oportuno para la seguridad operacional.</p>
       </div>
     </header>
   </div>
 
   <!-- Formulario -->
-  <div class="card">
+  <div class="card" aria-labelledby="form-title">
     <form id="ipoForm" novalidate>
       <div class="grid">
         <div>
@@ -284,11 +290,12 @@
           <label for="files">Evidencia (PDF/imagen/video, máx 10 MB c/u)</label>
           <div class="file">
             <input id="files" name="files" type="file" multiple accept="image/*,application/pdf,video/*" />
+            <div class="hint">Puedes subir varios archivos. Los archivos >10MB se omitirán automáticamente.</div>
           </div>
         </div>
       </div>
 
-      <div class="terms" style="margin-top:10px;">
+      <div class="terms" style="margin-top:12px;">
         <p>
           <strong>Términos y condiciones:</strong><br>
           SAVIARE LTDA, promueve e incentiva los Informes de Peligros Operacional (IPO) de forma
@@ -300,14 +307,14 @@
           deliberados, negligencia o violaciones a las normas, regulaciones o procedimientos
           estandarizados.
         </p>
-        <div class="row">
+        <div class="row" style="margin-top:6px;">
           <input id="acepto" type="checkbox" required />
-          <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y conditions.</label>
+          <label for="acepto" style="font-weight:600; margin:0 0 0 6px; color: #eafbe9;">He leído y acepto los términos y condiciones.</label>
         </div>
       </div>
 
       <div class="actions">
-        <button type="submit">Enviar reporte 🍀</button>
+        <button id="submitBtn" type="submit">Enviar reporte 🍀</button>
       </div>
     </form>
   </div>
@@ -315,121 +322,161 @@
 
 <!-- Overlay de carga -->
 <div id="overlay" role="alert" aria-live="polite">
-  <div>⏳ Enviando reporte…</div>
+  <div style="font-weight:700; font-size:1.05rem">⏳ Enviando reporte…</div>
   <div id="progressWrap"><div id="bar"></div></div>
   <div id="percent">0%</div>
 </div>
 
 <script>
-  /* === CONFIG === */
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
+/* =========================
+   CONFIGURACIÓN
+   ========================= */
+const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
 
-  /* === Bienvenida: fade-out automático, no bloquea UI === */
-  const welcome = document.getElementById('welcomeOverlay');
-  setTimeout(() => {
-    if (welcome) {
-      welcome.classList.add('fade-out');
-      setTimeout(() => (welcome.style.display = 'none'), 900);
-    }
-  }, 2800);
-  setTimeout(() => { if (welcome) welcome.style.display = 'none'; }, 5000);
+/* =========================
+   UTILIDADES UI
+   ========================= */
+const welcome = document.getElementById('welcomeOverlay');
+const overlay = document.getElementById('overlay');
+const bar = document.getElementById('bar');
+const percent = document.getElementById('percent');
 
-  /* === Utilidades de progreso === */
-  const overlay = document.getElementById('overlay');
-  const bar = document.getElementById('bar');
-  const percent = document.getElementById('percent');
-  function showOverlay(){ overlay.style.display = 'flex'; }
-  function hideOverlay(){ overlay.style.display = 'none'; bar.style.width = '0%'; percent.textContent = '0%'; }
-  function setProgress(p){ bar.style.width = p + '%'; percent.textContent = p + '%'; }
+function showOverlay(){
+  overlay.style.display = 'flex';
+  setProgress(3);
+}
+function hideOverlay(){
+  overlay.style.display = 'none';
+  setProgress(0);
+}
+function setProgress(p){
+  bar.style.width = p + '%';
+  percent.textContent = p + '%';
+}
 
-  /* === Lector de archivos a base64 (secuencial para progreso) === */
-  function readFileAsBase64(file){
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+/* Bienvenida: fade-out automático (no bloquea formulario) */
+setTimeout(() => {
+  if (welcome) {
+    welcome.classList.add('fade-out');
+    setTimeout(() => { welcome.style.display = 'none'; }, 900);
+  }
+}, 2800);
+// Fallback por si hay retrasos
+setTimeout(() => { if (welcome) welcome.style.display = 'none'; }, 5000);
+
+/* =========================
+   Lectura de archivos a base64
+   (secuencial para actualizar progreso)
+   ========================= */
+function readFileAsDataURL(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* =========================
+   Envío del formulario
+   ========================= */
+document.getElementById('ipoForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Validar términos
+  if (!document.getElementById('acepto').checked) {
+    alert('Debe aceptar los términos y condiciones.');
+    return;
   }
 
-  /* === Envío del formulario (manteniendo la lógica que funciona) === */
-  document.getElementById('ipoForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  const form = e.target;
+  const filesInput = document.getElementById('files');
 
-    // Validación de checkbox
-    if (!document.getElementById('acepto').checked) {
-      alert('Debe aceptar los términos y condiciones.');
-      return;
+  // Validación de tamaños totales
+  let totalSize = 0;
+  for (const f of filesInput.files) totalSize += f.size;
+  if (totalSize > 15 * 1024 * 1024) {
+    alert('El total de adjuntos supera 15 MB.');
+    return;
+  }
+
+  showOverlay();
+
+  // Convertir archivos a base64 con progreso (hasta 80%)
+  const files = [];
+  let uploaded = 0;
+  const maxEnc = Math.max(totalSize, 1);
+
+  for (const f of filesInput.files) {
+    if (f.size > 10 * 1024 * 1024) {
+      alert(`El archivo "${f.name}" excede 10 MB y se omitirá.`);
+      continue;
     }
-
-    const form = e.target;
-    const filesInput = document.getElementById('files');
-
-    // Validaciones de tamaño
-    let totalSize = 0;
-    for (const f of filesInput.files) totalSize += f.size;
-    if (totalSize > 15 * 1024 * 1024) {
-      alert('El total de adjuntos supera 15 MB.');
-      return;
-    }
-
-    showOverlay();
-
-    // Convertir archivos a base64 con progreso (hasta 80%)
-    const files = [];
-    let uploaded = 0;
-    const maxEnc = Math.max(totalSize, 1);
-    for (const f of filesInput.files) {
-      if (f.size > 10 * 1024 * 1024) {
-        alert(`El archivo "${f.name}" excede 10 MB y se omitirá.`);
-        continue;
-      }
-      const dataUrl = await readFileAsBase64(f);
+    try {
+      const dataUrl = await readFileAsDataURL(f);
+      const base64 = dataUrl.split(',')[1];
       files.push({
         name: f.name,
         mimeType: f.type || 'application/octet-stream',
-        base64: dataUrl.split(',')[1]
+        base64
       });
       uploaded += f.size;
       const pct = Math.min(80, Math.round((uploaded / maxEnc) * 80));
       setProgress(pct);
+    } catch (err) {
+      console.error('Error leyendo archivo', err);
     }
+  }
 
-    // Payload EXACTO que espera el Apps Script
-    const fechaActual = new Date().toISOString().split('T')[0]; // Fecha de envío
+  // Construir payload con múltiples nombres de campo (para compatibilidad)
+  const fechaPeligroVal = form.fechaPeligro.value || '';
+  const lugarVal       = form.lugar.value || '';
+  const baseVal        = form.base.value || '';
+  const nombreVal      = form.nombre.value || '';
+  const cargoVal       = form.cargo.value || '';
+  const descripcionVal = form.descripcion.value || '';
 
-    const payload = {
-      fecha_envio: fechaActual,
-      fecha_peligro: d.get('fecha_peligro'),
-      lugar_peligro: d.get('lugar_peligro'),
-      base: d.get('base'),
-      nombre: nombreFinal,
-      cargo: d.get('cargo'),
-      descripcion: d.get('descripcion'),
-      links_evidencia: files.map(f => f.name).join(', ')
+  const payload = {
+    // versiones camelCase y snake_case y nombres usados en diferentes scripts
+    fechaPeligro: fechaPeligroVal,
+    fecha_peligro: fechaPeligroVal,
+    fechaPeligroVal: fechaPeligroVal, // redundante para compatibilidad
+    lugar: lugarVal,
+    lugar_peligro: lugarVal,
+    base: baseVal,
+    nombre: nombreVal,
+    cargo: cargoVal,
+    descripcion: descripcionVal,
+    descripcion_peligro: descripcionVal,
+    // enviar archivos en formato que el Apps Script espera (array de {name,mimeType,base64})
+    files: files,
+    // fallback (si tu Apps Script espera links_evidencia)
+    links_evidencia: "" // Apps Script puede rellenar con links que cree
   };
 
-    // Marcar 90% mientras enviamos
-    setProgress(90);
+  // Mostrar 90% mientras enviamos
+  setProgress(90);
 
-    try {
-      await fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(payload)
-      });
-      setProgress(100);
-      setTimeout(() => {
-        hideOverlay();
-        alert('✅ ¡Reporte enviado!');
-        form.reset();
-      }, 600);
-    } catch (err) {
-      console.error(err);
+  // Enviar al Web App (no-cors para Apps Script pública)
+  try {
+    await fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(payload)
+    });
+    // no-cors => respuesta opaca: asumimos OK si no hubo excepción
+    setProgress(100);
+    setTimeout(() => {
       hideOverlay();
-      alert('❌ Error al enviar el reporte. Revisa tu conexión e inténtalo nuevamente.');
-    }
-  });
+      alert('✅ ¡Reporte enviado!');
+      form.reset();
+    }, 650);
+  } catch (err) {
+    console.error('Error fetch:', err);
+    hideOverlay();
+    alert('❌ Error al enviar el reporte. Revisa tu conexión e inténtalo nuevamente.');
+  }
+});
 </script>
 </body>
 </html>
