@@ -2,91 +2,85 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Reporte de Peligros</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-        }
-        form {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 600px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background: #28a745;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #218838;
-        }
-    </style>
+    <title>Prueba IPO</title>
 </head>
 <body>
-    <h2 style="text-align:center;">Reporte de Peligros / Error Humano</h2>
-    <form id="peligroForm" method="POST" action="https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec">
-        
-        <label for="fecha_envio">Fecha de envío</label>
-        <input type="date" name="Fecha envio" id="fecha_envio" required>
+    <h2>Formulario de Prueba IPO</h2>
 
-        <label for="fecha_peligro">Fecha del peligro</label>
-        <input type="date" name="Fecha del peligro" id="fecha_peligro" required>
+    <form id="testForm">
+        <label>Fecha del peligro:</label>
+        <input type="date" id="fechaPeligro" required><br><br>
 
-        <label for="lugar">Lugar del peligro / fase de vuelo</label>
-        <input type="text" name="Lugar del peligro / fase de vuelo" id="lugar" required>
+        <label>Lugar del peligro / fase de vuelo:</label>
+        <input type="text" id="lugar" required><br><br>
 
-        <label for="base">Base</label>
-        <input type="text" name="Base" id="base" required>
+        <label>Base:</label>
+        <input type="text" id="base" required><br><br>
 
-        <label for="nombre">Nombre</label>
-        <input type="text" name="Nombre" id="nombre" required>
+        <label>Nombre:</label>
+        <input type="text" id="nombre"><br><br>
 
-        <label for="cargo">Cargo</label>
-        <input type="text" name="Cargo" id="cargo" required>
+        <label>Cargo:</label>
+        <input type="text" id="cargo"><br><br>
 
-        <label for="descripcion">Descripción del peligro / error humano</label>
-        <textarea name="Descripción del peligro / error humano" id="descripcion" rows="4" required></textarea>
+        <label>Descripción del peligro / error humano:</label><br>
+        <textarea id="descripcion" required></textarea><br><br>
 
-        <label for="links">Links de evidencia</label>
-        <textarea name="Links de evidencia" id="links" rows="3"></textarea>
+        <label>Links de evidencia (archivos):</label>
+        <input type="file" id="files" multiple><br><br>
 
         <button type="submit">Enviar</button>
     </form>
 
     <script>
-        document.getElementById("peligroForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-            fetch(this.action, {
-                method: 'POST',
-                body: new FormData(this)
-            }).then(response => {
-                alert("Reporte enviado con éxito");
-                this.reset();
-            }).catch(error => {
-                alert("Ocurrió un error al enviar el formulario");
-                console.error(error);
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
+
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
             });
+        }
+
+        document.getElementById("testForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const filesInput = document.getElementById("files");
+            const files = [];
+
+            for (const f of filesInput.files) {
+                const base64 = await readFileAsBase64(f);
+                files.push({
+                    name: f.name,
+                    mimeType: f.type || "application/octet-stream",
+                    base64: base64
+                });
+            }
+
+            const payload = {
+                fechaPeligro: document.getElementById("fechaPeligro").value,
+                lugar: document.getElementById("lugar").value,
+                base: document.getElementById("base").value,
+                nombre: document.getElementById("nombre").value,
+                cargo: document.getElementById("cargo").value,
+                descripcion: document.getElementById("descripcion").value,
+                files: files
+            };
+
+            try {
+                await fetch(scriptURL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: JSON.stringify(payload)
+                });
+                alert("✅ Datos enviados correctamente");
+                e.target.reset();
+            } catch (err) {
+                alert("❌ Error al enviar");
+                console.error(err);
+            }
         });
     </script>
 </body>
