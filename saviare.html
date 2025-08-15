@@ -17,7 +17,6 @@
     --glass:rgba(255,255,255,.12);
     --glass-strong:rgba(255,255,255,.18);
     --shadow:0 10px 30px rgba(0,0,0,.18);
-    --ring:#b9ffd6;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -32,22 +31,6 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    overflow-x:hidden;
-  }
-
-  /* Glow suave animado del fondo */
-  body::before, body::after{
-    content:"";
-    position:fixed;
-    width:60vmax;height:60vmax;border-radius:50%;
-    filter:blur(90px);opacity:.15;z-index:-1;
-    background:conic-gradient(from 120deg,#e8ffb4,transparent 40%,#8ef8c2 60%,transparent);
-    animation:orbit 18s linear infinite;
-  }
-  body::after{ animation-direction:reverse; opacity:.18; filter:blur(110px); }
-  @keyframes orbit{ to{ transform:rotate(360deg); } }
-  @media (prefers-reduced-motion:reduce){
-    .plane, body::before, body::after{ animation:none !important; }
   }
 
   /* Bienvenida (no bloquea interacción) */
@@ -115,27 +98,19 @@
     margin-bottom:14px;
   }
   header.page .brand{
-    width:40px; height:40px; display:grid; place-items:center;
+    width:36px; height:36px; display:grid; place-items:center;
     background:var(--glass-strong);
     border:1px solid rgba(255,255,255,.18);
-    border-radius:12px;
+    border-radius:10px;
   }
   header.page h1{
     font-size:clamp(20px,3.4vw,28px);
-    margin:0 0 2px 0;
+    margin:0;
     font-weight:800;
     letter-spacing:.2px;
-    position:relative;
-  }
-  header.page h1::after{
-    content:"";
-    position:absolute;left:0;bottom:-6px;
-    width:72px;height:3px;border-radius:3px;
-    background:linear-gradient(90deg,#e8ffb4,#8ef8c2);
-    opacity:.9;
   }
   header.page p{
-    margin:10px 0 0; opacity:.9; font-size:.95rem;
+    margin:2px 0 0; opacity:.9; font-size:.95rem;
   }
 
   /* Formulario */
@@ -213,7 +188,6 @@
 </head>
 <body>
 
-<!-- Bienvenida -->
 <div id="welcomeOverlay">
   <div class="welcome-inner">
     <img src="Avion.png" class="plane" alt="Avión">
@@ -222,7 +196,6 @@
 </div>
 
 <div class="wrap">
-  <!-- Encabezado -->
   <div class="card" style="margin-bottom:14px;">
     <header class="page">
       <div class="brand" aria-hidden="true">🍀</div>
@@ -233,7 +206,6 @@
     </header>
   </div>
 
-  <!-- Formulario -->
   <div class="card">
     <form id="ipoForm" novalidate>
       <div class="grid">
@@ -304,7 +276,6 @@
   </div>
 </div>
 
-<!-- Overlay de carga -->
 <div id="overlay" role="alert" aria-live="polite">
   <div>⏳ Enviando reporte…</div>
   <div id="progressWrap"><div id="bar"></div></div>
@@ -313,8 +284,7 @@
 
 <script>
   /* === CONFIG === */
-  // Usa la URL de implementación que me indicaste (actualízala si fuera diferente)
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbw1tdbD8DWL2kSDwHm5uSqcuPLrAg_VOWx9_xaMXW41tgd5O3ELK6vLEi5Kw283g0i-/exec";
 
   /* === Bienvenida: fade-out automático, no bloquea UI === */
   const welcome = document.getElementById('welcomeOverlay');
@@ -346,11 +316,11 @@
     });
   }
 
-  /* === Envío del formulario (SIN enviar 'terminos' al spreadsheet) === */
+  /* === Envío del formulario === */
   document.getElementById('ipoForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Validación de checkbox de términos
+    // Validación de checkbox
     if (!document.getElementById('acepto').checked) {
       alert('Debe aceptar los términos y condiciones.');
       return;
@@ -359,7 +329,7 @@
     const form = e.target;
     const filesInput = document.getElementById('files');
 
-    // Validaciones de tamaño global
+    // Validaciones de tamaño
     let totalSize = 0;
     for (const f of filesInput.files) totalSize += f.size;
     if (totalSize > 15 * 1024 * 1024) {
@@ -375,7 +345,7 @@
     const maxEnc = Math.max(totalSize, 1); // evita div/0
     for (const f of filesInput.files) {
       if (f.size > 10 * 1024 * 1024) {
-        alert(`El archivo "${f.name}" excede 10 MB y se omitirá.`);
+        alert('El archivo "${f.name}" excede 10 MB y se omitirá.');
         continue;
       }
       const dataUrl = await readFileAsBase64(f);
@@ -389,7 +359,7 @@
       setProgress(pct);
     }
 
-    // Construir payload (OBJETO) con los campos que espera el Apps Script
+    // Construir payload
     const payload = {
       fechaPeligro: form.fechaPeligro.value || '',
       lugar: form.lugar.value || '',
@@ -397,7 +367,8 @@
       nombre: form.nombre.value || '',
       cargo: form.cargo.value || '',
       descripcion: form.descripcion.value || '',
-      files: files
+      terminos: document.getElementById('acepto').checked ? 'Sí' : 'No',
+      files
     };
 
     // Marcar 90% mientras enviamos
@@ -410,13 +381,12 @@
         mode: 'no-cors',
         body: JSON.stringify(payload)
       });
-      // no-cors => respuesta opaca: asumimos OK si no hubo excepción
+      // no-cors => respuesta opaqua: asumimos OK si no hubo excepción
       setProgress(100);
       setTimeout(() => {
         hideOverlay();
         alert('✅ ¡Reporte enviado!');
         form.reset();
-        // mantener estado accesible si se desea (ej: reactivar focus)
       }, 600);
     } catch (err) {
       console.error(err);
