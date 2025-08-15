@@ -396,15 +396,18 @@
     }
 
     // Payload EXACTO que espera el Apps Script
+    const fechaActual = new Date().toISOString().split('T')[0]; // Fecha de envío
+
     const payload = {
-      fechaPeligro: form.fechaPeligro.value || '',
-      lugar: form.lugar.value || '',
-      base: form.base.value || '',
-      nombre: form.nombre.value || '',
-      cargo: form.cargo.value || '',
-      descripcion: form.descripcion.value || '',
-      files
-    };
+      fecha_envio: fechaActual,
+      fecha_peligro: d.get('fecha_peligro'),
+      lugar_peligro: d.get('lugar_peligro'),
+      base: d.get('base'),
+      nombre: nombreFinal,
+      cargo: d.get('cargo'),
+      descripcion: d.get('descripcion'),
+      links_evidencia: files.map(f => f.name).join(', ')
+  };
 
     // Marcar 90% mientras enviamos
     setProgress(90);
