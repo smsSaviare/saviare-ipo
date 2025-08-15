@@ -5,66 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bienvenido a Saviare</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-  body {
-    background: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  #welcomeScreen {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1s ease;
-  }
-
-  #welcomeScreen h1 {
-    color: #2E7D32;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-
-  #avion {
-    width: 100px;
-    position: relative;
-    left: -150px;
-    animation: vuelo 3s ease-in-out forwards;
-  }
-
-  @keyframes vuelo {
-    0% { left: -150px; transform: rotate(0deg); }
-    50% { left: 50%; transform: rotate(10deg); }
-    100% { left: 120%; transform: rotate(0deg); }
-  }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Montserrat', sans-serif; }
+  body { background: #e8f5e9; display:flex; justify-content:center; align-items:center; height:100vh; overflow:hidden; }
+  #welcomeScreen { display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  #welcomeScreen h1 { color:#2E7D32; font-size:2.5rem; margin-bottom:2rem; text-align:center; }
+  #avion { width:100px; position:relative; left:-150px; animation:vuelo 3s ease-in-out forwards; }
+  @keyframes vuelo { 0% { left:-150px; } 50% { left:50%; transform:rotate(10deg); } 100% { left:120%; transform:rotate(0deg); } }
 </style>
 </head>
 <body>
-
 <div id="welcomeScreen">
-  <h1>Bienvenido a Saviare</h1>
+  <h1>Bienvenido a SAVIARE</h1>
   <img src="Avion.png" alt="Avión" id="avion">
 </div>
-
 <script>
-  // Después de 4 segundos, oculta la bienvenida y redirige al formulario
   setTimeout(() => {
-    const screen = document.getElementById('welcomeScreen');
-    screen.style.opacity = '0';
-    setTimeout(() => {
-      window.location.href = 'formulario.html'; // Cambia por la ruta de tu formulario
-    }, 1000);
+    window.location.href = 'formulario.html';
   }, 4000);
 </script>
-
 </body>
 </html>
