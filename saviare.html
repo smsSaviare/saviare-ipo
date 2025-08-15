@@ -293,7 +293,7 @@
         </p>
         <div class="row">
           <input id="acepto" type="checkbox" required />
-          <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y condiciones.</label>
+          <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y conditions.</label>
         </div>
       </div>
 
@@ -313,7 +313,7 @@
 
 <script>
   /* === CONFIG === */
-  // Usa la URL de implementación que me indicaste (actualízala si fuera diferente)
+  // Tu Web App URL (usa la implementación activa)
   const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
 
   /* === Bienvenida: fade-out automático, no bloquea UI === */
@@ -389,7 +389,8 @@
       setProgress(pct);
     }
 
-    // Construir payload (OBJETO) con los campos que espera el Apps Script
+    // Construir payload EXACTO que espera el Apps Script:
+    // fechaPeligro || lugar || base || nombre || cargo || descripcion || files
     const payload = {
       fechaPeligro: form.fechaPeligro.value || '',
       lugar: form.lugar.value || '',
@@ -403,7 +404,7 @@
     // Marcar 90% mientras enviamos
     setProgress(90);
 
-    // Enviar (no-cors como en el proyecto que sí funciona)
+    // Enviar (no-cors para compatibilidad con Apps Script desplegado)
     try {
       await fetch(scriptURL, {
         method: 'POST',
@@ -416,7 +417,6 @@
         hideOverlay();
         alert('✅ ¡Reporte enviado!');
         form.reset();
-        // mantener estado accesible si se desea (ej: reactivar focus)
       }, 600);
     } catch (err) {
       console.error(err);
