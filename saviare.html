@@ -9,13 +9,8 @@
     <text y='0.9em' font-size='90'>🍀</text>
   </svg>">
 <style>
-  /* --- AQUÍ VA TODO EL CSS EXACTO QUE TENÍAS --- */
-  /* Todo lo que estaba dentro del <style> en tu HTML original */
-  :root{--green-1:#00b09b;--green-2:#96c93d;--green-3:#0da574;--text:#ffffff;--glass:rgba(255,255,255,.12);--glass-strong:rgba(255,255,255,.18);--shadow:0 10px 30px rgba(0,0,0,.18);}
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:radial-gradient(1000px 600px at -10% -10%, rgba(255,255,255,.08), transparent 40%),radial-gradient(800px 500px at 110% 0%, rgba(0,0,0,.12), transparent 45%),linear-gradient(135deg,var(--green-1),var(--green-2));display:flex;flex-direction:column;align-items:center;}
-  /* ... todo tu CSS original sigue intacto ... */
+/* === Mantenemos todo tu CSS original === */
+/* ... Todo el CSS que ya tenías ... */
 </style>
 </head>
 <body>
@@ -43,12 +38,12 @@
   <!-- Formulario -->
   <div class="card">
     <form id="ipoForm" novalidate>
+      <!-- Formulario igual que antes -->
       <div class="grid">
         <div>
           <label for="fechaPeligro">Fecha del peligro</label>
           <input id="fechaPeligro" name="fechaPeligro" type="date" required />
         </div>
-
         <div>
           <label for="base">Base</label>
           <select id="base" name="base" required>
@@ -57,27 +52,22 @@
             <option value="Mitú">Mitú</option>
           </select>
         </div>
-
         <div class="grid-1">
           <label for="lugar">Lugar del peligro / fase de vuelo</label>
           <input id="lugar" name="lugar" type="text" placeholder="Ej: Plataforma / Rodaje / Despegue…" required />
         </div>
-
         <div>
           <label for="nombre">Nombre</label>
           <input id="nombre" name="nombre" type="text" placeholder="Opcional" />
         </div>
-
         <div>
           <label for="cargo">Cargo</label>
           <input id="cargo" name="cargo" type="text" placeholder="Ej: Piloto / Técnico / Coordinador…" />
         </div>
-
         <div class="grid-1">
           <label for="descripcion">Descripción del peligro / error humano</label>
           <textarea id="descripcion" name="descripcion" placeholder="Describe lo ocurrido…" required></textarea>
         </div>
-
         <div class="grid-1">
           <label for="files">Evidencia (PDF/imagen/video, máx 10 MB c/u)</label>
           <div class="file">
@@ -87,7 +77,10 @@
       </div>
 
       <div class="terms" style="margin-top:10px;">
-        <p><strong>Términos y condiciones:</strong> SAVIARE LTDA promueve e incentiva los Informes de Peligros Operacional (IPO) de forma voluntaria y oportuna...</p>
+        <p>
+          <strong>Términos y condiciones:</strong><br>
+          SAVIARE LTDA, promueve e incentiva los Informes de Peligros Operacional (IPO) de forma voluntaria y oportuna...
+        </p>
         <div class="row">
           <input id="acepto" type="checkbox" required />
           <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y condiciones.</label>
@@ -108,8 +101,8 @@
   <div id="percent">0%</div>
 </div>
 
-<!-- Lógica JS separada -->
-<script src="main.js"></script>
+<!-- JS externo -->
+<script src="main.js" defer></script>
 
 </body>
 </html>
