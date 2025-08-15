@@ -2,171 +2,185 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<title>IPO - Saviare</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistema IPO - Saviare</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background-color: #001f3f;
-        color: white;
-        text-align: center;
-        overflow-x: hidden;
-    }
-    h1 {
-        font-size: 2.5em;
-        margin-top: 50px;
-        white-space: nowrap;
-        overflow: hidden;
-        border-right: .15em solid orange;
-        animation: typing 4s steps(50, end), blink-caret .75s step-end infinite;
-    }
-    @keyframes typing {
-        from { width: 0 }
-        to { width: 100% }
-    }
-    @keyframes blink-caret {
-        from, to { border-color: transparent }
-        50% { border-color: orange; }
-    }
-    #plane {
-        width: 100px;
-        position: absolute;
-        top: 150px;
-        left: -150px;
-        animation: fly 4s forwards;
-        animation-delay: 0.5s;
-    }
-    @keyframes fly {
-        0% { left: -150px; opacity: 0; }
-        50% { opacity: 1; }
-        100% { left: calc(50% - 50px); opacity: 1; }
-    }
-    form {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        border-radius: 10px;
-        width: 90%;
-        max-width: 500px;
-        margin: 30px auto;
-        text-align: left;
-    }
-    label {
-        display: block;
-        margin-top: 15px;
-        font-weight: bold;
-    }
-    input, textarea, select {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border-radius: 5px;
-        border: none;
-    }
-    button {
-        margin-top: 20px;
-        padding: 10px 15px;
-        background-color: orange;
-        border: none;
-        color: white;
-        font-size: 1em;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-    button:hover {
-        background-color: darkorange;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #001f3f;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .bienvenida {
+    font-size: 2em;
+    margin-top: 20vh;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid white;
+    display: inline-block;
+  }
+
+  .avion {
+    width: 80px;
+    vertical-align: middle;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 1s ease;
+  }
+
+  form {
+    max-width: 600px;
+    margin: 30px auto;
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #218838;
+  }
 </style>
 </head>
 <body>
 
-<h1 id="welcome">¡Bienvenido al sistema IPO de Saviare!</h1>
-<img id="plane" src="Avion.png" alt="Avión">
+<!-- Bienvenida -->
+<h1 id="textoBienvenida" class="bienvenida"></h1>
+<img src="Avion.png" id="avionImg" class="avion" alt="Avión">
 
+<!-- Formulario -->
 <form id="ipoForm">
-    <label>Fecha del peligro:</label>
-    <input type="date" name="fechaPeligro" required>
+  <label>Fecha del peligro:</label>
+  <input type="date" name="fechaPeligro" required>
 
-    <label>Lugar del peligro / fase de vuelo:</label>
-    <input type="text" name="lugar" required>
+  <label>Lugar/Fase de vuelo:</label>
+  <input type="text" name="lugar" required>
 
-    <label>Base:</label>
-    <input type="text" name="base" required>
+  <label>Base:</label>
+  <input type="text" name="base" required>
 
-    <label>Nombre:</label>
-    <input type="text" name="nombre">
+  <label>Nombre:</label>
+  <input type="text" name="nombre">
 
-    <label>Cargo:</label>
-    <input type="text" name="cargo">
+  <label>Cargo:</label>
+  <input type="text" name="cargo">
 
-    <label>Descripción del peligro / error humano:</label>
-    <textarea name="descripcion" rows="4" required></textarea>
+  <label>Descripción:</label>
+  <textarea name="descripcion" required></textarea>
 
-    <label>Adjuntar evidencia (opcional):</label>
-    <input type="file" name="files" multiple>
+  <label>¿Desea reportar como anónimo?</label>
+  <select name="anonimo">
+    <option value="false">No</option>
+    <option value="true">Sí</option>
+  </select>
 
-    <label>
-        <input type="checkbox" name="anonimo"> Enviar de forma anónima
-    </label>
-    <label>
-        <input type="checkbox" name="terminos" required> Acepto términos y condiciones
-    </label>
+  <label>¿Acepta los términos?</label>
+  <select name="terminos" required>
+    <option value="true">Sí</option>
+    <option value="false">No</option>
+  </select>
 
-    <button type="submit">Enviar</button>
+  <label>Subir archivo(s):</label>
+  <input type="file" name="files" multiple>
+
+  <button type="submit">Enviar</button>
 </form>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbw1tdbD8DWL2kSDwHm5uSqcuPLrAg_VOWx9_xaMXW41tgd5O3ELK6vLEi5Kw283g0i-/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
 
-document.getElementById("ipoForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
+// Animación bienvenida
+const texto = "¡Bienvenido al sistema IPO de Saviare!";
+let i = 0;
+const velocidad = 70;
 
-    const form = e.target;
-    const data = {
-        fechaPeligro: form.fechaPeligro.value,
-        lugar: form.lugar.value,
-        base: form.base.value,
-        nombre: form.nombre.value,
-        cargo: form.cargo.value,
-        descripcion: form.descripcion.value,
-        anonimo: form.anonimo.checked,
-        terminos: form.terminos.checked ? "Sí" : "No",
-        files: []
-    };
+function escribirTexto() {
+  if (i < texto.length) {
+    document.getElementById("textoBienvenida").textContent += texto.charAt(i);
+    i++;
+    setTimeout(escribirTexto, velocidad);
+  } else {
+    const avion = document.getElementById("avionImg");
+    avion.style.opacity = 1;
+    avion.style.transform = "translateX(0)";
+    setTimeout(() => {
+      document.getElementById("ipoForm").style.display = "block";
+      document.getElementById("textoBienvenida").style.display = "none";
+      avion.style.display = "none";
+    }, 2000);
+  }
+}
+escribirTexto();
 
-    const fileInputs = form.files.files;
-    for (let i = 0; i < fileInputs.length; i++) {
-        const file = fileInputs[i];
-        const reader = new FileReader();
-        const base64 = await new Promise((resolve, reject) => {
-            reader.onload = () => resolve(reader.result.split(",")[1]);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
+// Envío formulario
+document.getElementById("ipoForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    fechaPeligro: form.fechaPeligro.value,
+    lugar: form.lugar.value,
+    base: form.base.value,
+    nombre: form.nombre.value,
+    cargo: form.cargo.value,
+    descripcion: form.descripcion.value,
+    anonimo: form.anonimo.value === "true",
+    terminos: form.terminos.value === "true",
+    files: []
+  };
+
+  const files = form.files.files;
+  if (files.length > 0) {
+    let pending = files.length;
+    for (let file of files) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
         data.files.push({
-            name: file.name,
-            type: file.type,
-            base64: base64
+          name: file.name,
+          type: file.type,
+          base64: e.target.result.split(",")[1]
         });
+        pending--;
+        if (pending === 0) enviarDatos(data);
+      };
+      reader.readAsDataURL(file);
     }
-
-    fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(data)
-    })
-    .then(res => res.text())
-    .then(txt => {
-        if (txt === "OK") {
-            alert("✅ Información enviada correctamente");
-            form.reset();
-        } else {
-            alert("⚠️ Error: " + txt);
-        }
-    })
-    .catch(err => {
-        alert("❌ Error al enviar: " + err);
-    });
+  } else {
+    enviarDatos(data);
+  }
 });
+
+function enviarDatos(data) {
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(resp => {
+    alert("Formulario enviado correctamente");
+    document.getElementById("ipoForm").reset();
+  })
+  .catch(err => alert("Error: " + err));
+}
 </script>
 
 </body>
