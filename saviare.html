@@ -3,344 +3,169 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IPO – Saviare LTDA</title>
-<link rel="icon" href="data:image/svg+xml;utf8,
-  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-    <text y='0.9em' font-size='90'>🍀</text>
-  </svg>">
+<title>RPV – Saviare</title>
 <style>
-:root{
-  --green-1:#00b09b;
-  --green-2:#96c93d;
-  --text:#ffffff;
-  --glass:rgba(255,255,255,.12);
-  --glass-strong:rgba(255,255,255,.18);
-  --shadow:0 10px 30px rgba(0,0,0,.18);
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(1000px 600px at -10% -10%, rgba(255,255,255,.08), transparent 40%),
-    radial-gradient(800px 500px at 110% 0%, rgba(0,0,0,.12), transparent 45%),
-    linear-gradient(135deg,var(--green-1),var(--green-2));
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+body { font-family: "Helvetica Neue", Helvetica, Tahoma, sans-serif; background:#fff; color:#000; padding:20px; max-width:600px; margin:auto;}
+h1 { text-align:center; color:#0073E6; }
+.logo { display:block; margin:0 auto 20px; max-width:200px; }
+.form-group { margin-bottom:15px; }
+label { font-weight:bold; display:block; margin-bottom:5px; }
+input[type="text"], input[type="date"], textarea { width:100%; padding:10px; border:1px solid #ccc; border-radius:5px; box-sizing:border-box; }
+textarea { resize:vertical; }
+input[type="file"] { border:none; }
+button { width:100%; background:#0073E6; color:#fff; border:none; border-radius:5px; padding:12px; font-size:16px; cursor:pointer; }
+button:hover { background:#005bb5; }
+.checkbox-label, .accept-label { display:flex; align-items:center; font-weight:normal; }
+.checkbox-label input, .accept-label input { margin-right:8px; }
 
-/* Bienvenida */
-#welcomeOverlay{
-  position:fixed; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  padding:24px; text-align:center;
-  background:linear-gradient(135deg, rgba(0,176,155,.9), rgba(150,201,61,.92));
-  z-index:999;
-  pointer-events:none;
-  opacity:1; transition:opacity .9s ease;
-}
-#welcomeOverlay.fade-out{ opacity:0; }
+#overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; font-size:18px; z-index:99; display:none; }
+#progressContainer { width:80%; margin-top:20px; }
+#progressBar { height:14px; background-color:#0073E6; border-radius:6px; width:0%; transition:width 0.3s ease; }
+#progressWrapper { background:#eee; border-radius:6px; overflow:hidden; height:14px; }
+#progressPercent { text-align:right; font-size:13px; margin-top:5px; }
 
-.welcome-inner{
-  position:relative;
-  max-width:900px; width:100%;
-  padding:32px 16px;
-}
-.welcome-title{
-  font-size:clamp(20px,4.5vw,36px);
-  font-weight:800;
-  letter-spacing:.3px;
-  margin:0;
-  display:flex; gap:.5rem; align-items:center; justify-content:center;
-  opacity:0; animation:fadeInTitle 1.2s ease .3s forwards;
-  text-shadow:0 3px 12px rgba(0,0,0,.25);
-}
-.welcome-title .clover{filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
-@keyframes fadeInTitle{ to{opacity:1} }
-
-/* Avión */
-.plane{
-  position:absolute;
-  bottom:10vh;
-  left:-30vw;
-  width:min(140px,26vw);
-  filter:drop-shadow(0 18px 18px rgba(0,0,0,.35));
-  opacity:.95;
-  transform:translateX(0) translateY(0) rotate(0);
-  animation:planeFly 3.2s ease-in-out .15s forwards;
-}
-@keyframes planeFly{
-  0%   { transform:translateX(0) translateY(0) rotate(0deg); }
-  70%  { transform:translateX(115vw) translateY(-6vh) rotate(14deg); }
-  100% { transform:translateX(140vw) translateY(-10vh) rotate(18deg); opacity:0; }
-}
-
-/* Contenedor principal */
-.wrap{
-  width:min(940px,92vw);
-  margin: clamp(20px, 4vh, 36px) auto 40px;
-}
-.card{
-  background:var(--glass);
-  border:1px solid rgba(255,255,255,.16);
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(10px);
-  border-radius:18px;
-  padding:20px;
-}
-header.page{
-  display:flex; align-items:center; gap:12px;
-  margin-bottom:14px;
-}
-header.page .brand{
-  width:36px; height:36px; display:grid; place-items:center;
-  background:var(--glass-strong);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:10px;
-}
-header.page h1{
-  font-size:clamp(20px,3.4vw,28px);
-  margin:0;
-  font-weight:800;
-  letter-spacing:.2px;
-}
-header.page p{
-  margin:2px 0 0; opacity:.9; font-size:.95rem;
-}
-
-/* Formulario */
-form{ margin-top:8px; }
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-.grid-1{ display:grid; grid-template-columns:1fr; gap:14px; }
-@media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-
-label{ font-weight:700; font-size:.92rem; margin-bottom:6px; display:block; }
-input[type="text"], input[type="date"], select, textarea{
-  width:100%;
-  padding:12px 12px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.28);
-  outline:none;
-  color:var(--text);
-  background:rgba(255,255,255,.08);
-}
-textarea{ min-height:120px; resize:vertical; }
-
-.file{
-  border:1px dashed rgba(255,255,255,.35);
-  border-radius:12px;
-  padding:14px;
-  background:rgba(255,255,255,.06);
-}
-
-.terms{
-  background:rgba(0,0,0,.22);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:14px;
-  padding:12px 14px;
-  font-size:.92rem;
-  line-height:1.35rem;
-}
-.terms p{ margin:.2rem 0 .6rem; }
-.terms .row{ display:flex; gap:8px; align-items:flex-start; }
-.terms input[type="checkbox"]{ margin-top:3px; }
-
-.actions{ margin-top:8px; }
-button{
-  width:100%;
-  padding:13px 16px;
-  border:none; border-radius:12px;
-  font-weight:800; letter-spacing:.3px;
-  color:#0b1f16;
-  background:linear-gradient(135deg,#e8ffb4,#8ef8c2);
-  cursor:pointer;
-  box-shadow:0 8px 18px rgba(0,0,0,.18);
-  transition:transform .08s ease, filter .2s ease;
-}
-button:hover{ filter:brightness(1.06); }
-button:active{ transform:translateY(1px) scale(.998); }
-
-/* Overlay de carga */
-#overlay{
-  position:fixed; inset:0; display:none;
-  background:rgba(0,0,0,.65);
-  color:#fff; z-index:1000;
-  align-items:center; justify-content:center; flex-direction:column;
-  padding:20px; text-align:center;
-}
-#progressWrap{
-  width:min(560px,86vw); margin-top:14px;
-  background:#eaeaea; border-radius:10px; overflow:hidden;
-  box-shadow:inset 0 0 8px rgba(0,0,0,.12);
-}
-#bar{ height:14px; width:0%; background:#00d2a0; transition:width .25s ease; }
-#percent{ margin-top:6px; font-size:.9rem; opacity:.9; }
+#welcomeOverlay { position:fixed; inset:0; background:linear-gradient(to right, #0073E6, #ffffff); display:flex; align-items:center; overflow:hidden; z-index:999; padding-left:5%; }
+#welcomeText { color:#fff; font-size:2em; font-weight:bold; z-index:1; }
+#plane { position:absolute; left:-300px; width:200px; z-index:2; animation:fly 3s linear forwards; }
+@keyframes fly { to { left:100%; } }
 </style>
 </head>
 <body>
 
-<!-- Bienvenida -->
 <div id="welcomeOverlay">
-  <div class="welcome-inner">
-    <img src="Avion.png" class="plane" alt="Avión">
-    <h2 class="welcome-title"><span class="clover">🍀</span> ¡Bienvenido al sistema IPO de Saviare LTDA!</h2>
+  <div id="welcomeText">¡Bienvenido al sistema RPV de Saviare!</div>
+  <img id="plane" src="https://raw.githubusercontent.com/JuanCamiloTibaduiza/avianca-rpv-demo/main/plane_avianca.png" alt="Avión Saviare">
+</div>
+
+<div id="overlay">
+  ⏳ Subiendo archivos, por favor espera…
+  <div id="progressContainer" style="display:none;">
+    <div id="progressWrapper"><div id="progressBar"></div></div>
+    <div id="progressPercent">0%</div>
   </div>
 </div>
 
-<div class="wrap">
-  <!-- Encabezado -->
-  <div class="card" style="margin-bottom:14px;">
-    <header class="page">
-      <div class="brand" aria-hidden="true">🍀</div>
-      <div>
-        <h1>Informe de Peligro Operacional (IPO)</h1>
-        <p>Reporte moderno, confidencial y oportuno para la seguridad operacional.</p>
-      </div>
-    </header>
+<img class="logo" src="https://raw.githubusercontent.com/JuanCamiloTibaduiza/avianca-rpv-demo/main/logo_avianca_cargo.png" alt="Saviare Logo">
+<h1>REPORTE DE PELIGROS VOLUNTARIOS (RPV)</h1>
+
+<form id="rpvForm">
+  <div class="form-group">
+    <label>Fecha del peligro
+      <input type="date" name="fecha" required>
+    </label>
   </div>
 
-  <!-- Formulario -->
-  <div class="card">
-    <form id="ipoForm" novalidate>
-      <div class="grid">
-        <div>
-          <label for="fechaPeligro">Fecha del peligro</label>
-          <input id="fechaPeligro" name="fechaPeligro" type="date" required />
-        </div>
-
-        <div>
-          <label for="base">Base</label>
-          <select id="base" name="base" required>
-            <option value="" disabled selected>Selecciona una base</option>
-            <option value="Villavicencio">Villavicencio</option>
-            <option value="Mitú">Mitú</option>
-          </select>
-        </div>
-
-        <div class="grid-1">
-          <label for="lugar">Lugar del peligro / fase de vuelo</label>
-          <input id="lugar" name="lugar" type="text" placeholder="Ej: Plataforma / Rodaje / Despegue…" required />
-        </div>
-
-        <div>
-          <label for="nombre">Nombre</label>
-          <input id="nombre" name="nombre" type="text" placeholder="Opcional" />
-        </div>
-
-        <div>
-          <label for="cargo">Cargo</label>
-          <input id="cargo" name="cargo" type="text" placeholder="Ej: Piloto / Técnico / Coordinador…" />
-        </div>
-
-        <div class="grid-1">
-          <label for="descripcion">Descripción del peligro / error humano</label>
-          <textarea id="descripcion" name="descripcion" placeholder="Describe lo ocurrido…" required></textarea>
-        </div>
-
-        <div class="grid-1">
-          <label for="files">Evidencia (PDF/imagen/video, máx 10 MB c/u)</label>
-          <div class="file">
-            <input id="files" name="files" type="file" multiple accept="image/*,application/pdf,video/*" />
-          </div>
-        </div>
-      </div>
-
-      <div class="terms" style="margin-top:10px;">
-        <p>
-          <strong>Términos y condiciones:</strong><br>
-          SAVIARE LTDA garantiza la confidencialidad y discreción de los reportes.
-        </p>
-        <div class="row">
-          <input id="acepto" type="checkbox" required />
-          <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y condiciones.</label>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button type="submit">Enviar reporte 🍀</button>
-      </div>
-    </form>
+  <div class="form-group">
+    <label>Lugar del peligro / Fase de vuelo
+      <input name="lugar" type="text" placeholder="Ej: Villavicencio">
+    </label>
   </div>
-</div>
 
-<!-- Overlay de carga -->
-<div id="overlay" role="alert" aria-live="polite">
-  <div>⏳ Enviando reporte…</div>
-  <div id="progressWrap"><div id="bar"></div></div>
-  <div id="percent">0%</div>
-</div>
+  <div class="form-group">
+    <label>Base
+      <input name="base" type="text" placeholder="Ej: Base Aérea XYZ">
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label>Nombre
+      <input id="nombreInput" name="nombre" type="text" placeholder="Ej: Juan Pérez">
+    </label>
+    <label class="checkbox-label">
+      <input type="checkbox" id="anon"> Confidencial
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label>Cargo
+      <input name="cargo" type="text" placeholder="Ej: Coordinador de operaciones">
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label>Descripción del peligro / Error humano
+      <textarea name="descripcion" rows="4" placeholder="Describe el peligro..." required></textarea>
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label>Evidencia (PDF/imagen/video, máx 10 MB c/u)
+      <input name="files" id="files" type="file" multiple accept="image/*,application/pdf,video/*">
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label class="accept-label">
+      <input type="checkbox" id="acepto" required> He leído y acepto el uso y tratamiento de mis datos personales.
+    </label>
+  </div>
+
+  <button type="submit">Enviar reporte</button>
+</form>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec"; // Pon aquí tu Apps Script
+const scriptURL = 'TU_SCRIPT_URL_AQUI';
 const overlay = document.getElementById('overlay');
-const bar = document.getElementById('bar');
-const percent = document.getElementById('percent');
+const progressContainer = document.getElementById('progressContainer');
+const progressBar = document.getElementById('progressBar');
+const progressPercent = document.getElementById('progressPercent');
 
-const welcome = document.getElementById('welcomeOverlay');
-setTimeout(() => {
-  if (welcome) {
-    welcome.classList.add('fade-out');
-    setTimeout(() => (welcome.style.display = 'none'), 900);
-  }
-}, 2800);
+setTimeout(() => document.getElementById('welcomeOverlay').style.display='none', 3000);
 
-document.getElementById('ipoForm').addEventListener('submit', async e => {
+document.getElementById('anon').addEventListener('change', e => {
+  const n = document.getElementById('nombreInput');
+  if(e.target.checked){ n.value=''; n.disabled=true; n.placeholder=''; n.style.background='#f2f2f2'; }
+  else{ n.disabled=false; n.placeholder='Ej: Juan Pérez'; n.style.background='#fff'; }
+});
+
+document.getElementById('rpvForm').addEventListener('submit', async e => {
   e.preventDefault();
-  if (!document.getElementById('acepto').checked) { alert('Debe aceptar los términos.'); return; }
-
-  const form = e.target;
+  if(!document.getElementById('acepto').checked){ alert('Debe aceptar el tratamiento de datos.'); return; }
+  const d = new FormData(e.target);
   const filesInput = document.getElementById('files');
+  const anonimo = document.getElementById('anon').checked;
+  const nombreFinal = anonimo?'Anónimo':(d.get('nombre')||'Sin nombre');
 
-  // Validación tamaño
-  let totalSize = 0;
-  for (const f of filesInput.files) totalSize += f.size;
-  if (totalSize > 15 * 1024 * 1024) { alert('Total de adjuntos supera 15 MB.'); return; }
+  let totalSize=0;
+  for(const f of filesInput.files) totalSize+=f.size;
+  if(totalSize>15*1024*1024){ alert('El total de adjuntos supera 15 MB.'); return; }
 
-  overlay.style.display = 'flex';
+  overlay.style.display='flex';
+  if(filesInput.files.length>0) progressContainer.style.display='block';
 
-  const files = [];
-  let uploaded = 0;
-  const maxEnc = Math.max(totalSize,1);
-
-  for (const f of filesInput.files){
-    if (f.size > 10*1024*1024){ alert(`Archivo ${f.name} >10MB, se omite.`); continue; }
-    const dataUrl = await new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result.split(',')[1]);
+  let files=[], uploaded=0;
+  for(const f of filesInput.files){
+    if(f.size>10*1024*1024){ alert(`Archivo ${f.name} excede 10 MB y se omite.`); continue; }
+    const reader = new FileReader();
+    const base64 = await new Promise(resolve=>{
+      reader.onload=()=>{ uploaded+=f.size; const percent=Math.round((uploaded/totalSize)*80); progressBar.style.width=percent+'%'; progressPercent.textContent=percent+'%'; resolve(reader.result.split(',')[1]); }
       reader.readAsDataURL(f);
     });
-    files.push({name:f.name,mimeType:f.type||'application/octet-stream',base64:dataUrl});
-    uploaded += f.size;
-    const pct = Math.min(80, Math.round((uploaded/maxEnc)*80));
-    bar.style.width = pct+'%';
-    percent.textContent = pct+'%';
+    files.push({ name:f.name, mimeType:f.type, base64 });
   }
 
   const payload = {
-    fechaPeligro: form.fechaPeligro.value || '',
-    lugar: form.lugar.value || '',
-    base: form.base.value || '',
-    nombre: form.nombre.value || '',
-    cargo: form.cargo.value || '',
-    descripcion: form.descripcion.value || '',
+    fecha: d.get('fecha'),
+    lugar: d.get('lugar'),
+    base: d.get('base'),
+    nombre: nombreFinal,
+    cargo: d.get('cargo'),
+    descripcion: d.get('descripcion'),
+    anonimo,
     files
   };
 
-  bar.style.width='90%'; percent.textContent='90%';
+  progressBar.style.width='90%'; progressPercent.textContent='90%';
+  await fetch(scriptURL, { method:'POST', mode:'no-cors', body:JSON.stringify(payload) });
+  progressBar.style.width='100%'; progressPercent.textContent='100%';
 
-  try {
-    await fetch(scriptURL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
-    bar.style.width='100%'; percent.textContent='100%';
-    setTimeout(() => { overlay.style.display='none'; bar.style.width='0%'; percent.textContent='0%'; form.reset(); alert('✅ ¡Reporte enviado!'); },700);
-  } catch(err){ console.error(err); overlay.style.display='none'; alert('❌ Error al enviar.'); }
+  setTimeout(()=>{
+    overlay.style.display='none'; progressContainer.style.display='none'; progressBar.style.width='0%'; progressPercent.textContent='0%';
+    alert('✅ ¡Reporte enviado!');
+    e.target.reset(); document.getElementById('nombreInput').disabled=false; document.getElementById('nombreInput').placeholder='Ej: Juan Pérez'; document.getElementById('nombreInput').style.background='#fff';
+  },700);
 });
 </script>
+
 </body>
 </html>
