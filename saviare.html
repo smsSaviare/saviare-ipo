@@ -1,88 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Formulario de Peligros</title>
+<meta charset="UTF-8">
+<title>Formulario de Peligros</title>
 </head>
 <body>
-    <h2>Reporte de Peligros</h2>
+<h2>Reporte de Peligro</h2>
+<form id="peligroForm">
+  <label>Fecha del peligro:</label>
+  <input type="date" name="fechaPeligro" required><br><br>
 
-    <form id="testForm">
-        <label>Fecha del peligro:</label>
-        <input type="date" id="fechaPeligro" required><br><br>
+  <label>Lugar del peligro / fase de vuelo:</label>
+  <input type="text" name="lugar" required><br><br>
 
-        <label>Lugar del peligro / fase de vuelo:</label>
-        <input type="text" id="lugar" required><br><br>
+  <label>Base:</label>
+  <input type="text" name="base" required><br><br>
 
-        <label>Base:</label>
-        <input type="text" id="base" required><br><br>
+  <label>Nombre:</label>
+  <input type="text" name="nombre" required><br><br>
 
-        <label>Nombre:</label>
-        <input type="text" id="nombre"><br><br>
+  <label>Cargo:</label>
+  <input type="text" name="cargo" required><br><br>
 
-        <label>Cargo:</label>
-        <input type="text" id="cargo"><br><br>
+  <label>Descripción del peligro / error humano:</label>
+  <textarea name="descripcion" required></textarea><br><br>
 
-        <label>Descripción del peligro / error humano:</label><br>
-        <textarea id="descripcion" required></textarea><br><br>
+  <label>Links de evidencia (puedes subir archivos):</label>
+  <input type="file" id="files" multiple><br><br>
 
-        <label>Archivos de evidencia:</label>
-        <input type="file" id="files" multiple><br><br>
+  <button type="submit">Enviar</button>
+</form>
 
-        <button type="submit">Enviar</button>
-    </form>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYM-aswlaNTOCCl87x5vsfI7k0ZNlHBAhqrtwJG0MOzvUBuDW2tjOWXXb5xSGw7QO7/exec";
 
-    <script>
-        // 📌 Tu enlace de Apps Script Web App
-        const scriptURL = "https://script.google.com/macros/s/AKfycbyYxKo88EvsBXTEW7VkGDXmbKmRqNik_-EdzsvKWnNEwiR_ro6E-VPSSi2lvoPnCVqu/exec";
+document.getElementById('peligroForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const form = e.target;
+  const data = {
+    fechaPeligro: form.fechaPeligro.value,
+    lugar: form.lugar.value,
+    base: form.base.value,
+    nombre: form.nombre.value,
+    cargo: form.cargo.value,
+    descripcion: form.descripcion.value,
+    files: []
+  };
 
-        function readFileAsBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
+  // Convertir archivos a Base64
+  const files = document.getElementById('files').files;
+  for (let file of files) {
+    const base64 = await toBase64(file);
+    data.files.push({
+      name: file.name,
+      mimeType: file.type,
+      base64: base64.split(',')[1]
+    });
+  }
 
-        document.getElementById("testForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
+  // Enviar al Google Apps Script
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(text => alert("Respuesta del servidor: " + text))
+  .catch(err => alert("Error: " + err));
+});
 
-            const filesInput = document.getElementById("files");
-            const files = [];
-
-            for (const f of filesInput.files) {
-                const base64 = await readFileAsBase64(f);
-                files.push({
-                    name: f.name,
-                    mimeType: f.type || "application/octet-stream",
-                    base64: base64
-                });
-            }
-
-            const payload = {
-                fechaPeligro: document.getElementById("fechaPeligro").value,
-                lugar: document.getElementById("lugar").value,
-                base: document.getElementById("base").value,
-                nombre: document.getElementById("nombre").value,
-                cargo: document.getElementById("cargo").value,
-                descripcion: document.getElementById("descripcion").value,
-                files: files
-            };
-
-            try {
-                await fetch(scriptURL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    body: JSON.stringify(payload)
-                });
-                alert("✅ Datos enviados correctamente");
-                e.target.reset();
-            } catch (err) {
-                alert("❌ Error al enviar");
-                console.error(err);
-            }
-        });
-    </script>
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+</script>
 </body>
 </html>
