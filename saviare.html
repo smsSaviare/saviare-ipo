@@ -21,19 +21,28 @@
 </form>
 
 <script>
-document.getElementById("miFormulario").addEventListener("submit", function(e) {
+document.getElementById("miFormulario").addEventListener("submit", async function(e) {
   e.preventDefault();
+
   const datos = Object.fromEntries(new FormData(this).entries());
-  
-  google.script.run
-    .withSuccessHandler(function(respuesta) {
-      if (respuesta === "OK") {
-        alert("Datos enviados correctamente.");
-        document.getElementById("miFormulario").reset();
-      } else {
-        alert("Hubo un problema: " + respuesta);
-      }
-    })
-    .guardarDatos(datos);
+
+  try {
+    const respuesta = await fetch("https://script.google.com/macros/s/AKfycbwYM-aswlaNTOCCl87x5vsfI7k0ZNlHBAhqrtwJG0MOzvUBuDW2tjOWXXb5xSGw7QO7/exec", {
+      method: "POST",
+      body: JSON.stringify(datos),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    const json = await respuesta.json();
+
+    if (json.status === "ok") {
+      alert("Datos enviados correctamente");
+      this.reset();
+    } else {
+      alert("Error: " + json.message);
+    }
+  } catch (error) {
+    alert("Error de conexión: " + error);
+  }
 });
 </script>
