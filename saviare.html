@@ -4,56 +4,204 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>IPO – Saviare LTDA</title>
+<link rel="icon" href="data:image/svg+xml;utf8,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <text y='0.9em' font-size='90'>🍀</text>
+  </svg>">
 <style>
-  :root{--green-1:#00b09b;--green-2:#96c93d;--text:#fff;--glass:rgba(255,255,255,.12);--shadow:0 10px 30px rgba(0,0,0,.18);}
+  :root{
+    --green-1:#00b09b;
+    --green-2:#96c93d;
+    --green-3:#0da574;
+    --text:#ffffff;
+    --glass:rgba(255,255,255,.12);
+    --glass-strong:rgba(255,255,255,.18);
+    --shadow:0 10px 30px rgba(0,0,0,.18);
+  }
   *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
-        background:linear-gradient(135deg,var(--green-1),var(--green-2)); display:flex; flex-direction:column; align-items:center; padding-bottom:40px;}
-  #welcomeOverlay{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; text-align:center;
-        background:linear-gradient(135deg, rgba(0,176,155,.9), rgba(150,201,61,.92)); z-index:999; pointer-events:none; opacity:1; transition:opacity .9s ease; overflow:hidden;}
-  #welcomeOverlay.fade-out{opacity:0;}
-  .welcome-inner{max-width:900px;width:100%;padding:32px 16px;}
-  .welcome-title{font-size:clamp(20px,4.5vw,36px); font-weight:800; margin:0; display:flex; gap:.5rem; align-items:center; justify-content:center; opacity:0; animation:fadeInTitle 1.2s ease .3s forwards; text-shadow:0 3px 12px rgba(0,0,0,.25);}
-  @keyframes fadeInTitle{to{opacity:1}}
-  .plane{ position:absolute; bottom:10vh; left:-30vw; width:min(140px,26vw); filter:drop-shadow(0 18px 18px rgba(0,0,0,.35)); opacity:.95; transform:translateX(0) translateY(0) rotate(0); animation:planeFly 3.2s ease-in-out .15s forwards;}
-  @keyframes planeFly{0% { transform:translateX(0) translateY(0) rotate(0deg);}70% { transform:translateX(115vw) translateY(-6vh) rotate(14deg);}100% { transform:translateX(140vw) translateY(-10vh) rotate(18deg); opacity:0; }}
-  .wrap{width:min(940px,92vw); margin: clamp(20px,4vh,36px) auto 40px;}
-  .card{ background:var(--glass); border:1px solid rgba(255,255,255,.16); box-shadow:var(--shadow); backdrop-filter:blur(10px); border-radius:18px; padding:20px; margin-bottom:14px;}
-  header.page{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-  header.page .brand{ width:36px; height:36px; display:grid; place-items:center; background:rgba(255,255,255,.18); border-radius:10px; }
-  header.page h1{ font-size:clamp(20px,3.4vw,28px); margin:0; font-weight:800; }
-  header.page p{ margin:2px 0 0; opacity:.9; font-size:.95rem; }
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1000px 600px at -10% -10%, rgba(255,255,255,.08), transparent 40%),
+      radial-gradient(800px 500px at 110% 0%, rgba(0,0,0,.12), transparent 45%),
+      linear-gradient(135deg,var(--green-1),var(--green-2));
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* Bienvenida */
+  #welcomeOverlay{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; text-align:center;
+    background:linear-gradient(135deg, rgba(0,176,155,.9), rgba(150,201,61,.92));
+    z-index:999;
+    pointer-events:none;
+    opacity:1; transition:opacity .9s ease;
+    overflow:hidden;
+  }
+  #welcomeOverlay.fade-out{ opacity:0; }
+  .welcome-inner{
+    position:relative;
+    max-width:900px; width:100%;
+    padding:32px 16px;
+  }
+  .welcome-title{
+    font-size:clamp(20px,4.5vw,36px);
+    font-weight:800;
+    letter-spacing:.3px;
+    margin:0;
+    display:flex; gap:.5rem; align-items:center; justify-content:center;
+    opacity:0; animation:fadeInTitle 1.2s ease .3s forwards;
+    text-shadow:0 3px 12px rgba(0,0,0,.25);
+  }
+  .welcome-title .clover{filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
+  @keyframes fadeInTitle{ to{opacity:1} }
+
+  /* Avión */
+  .plane{
+    position:absolute;
+    bottom:10vh;
+    left:-30vw;
+    width:min(140px,26vw);
+    filter:drop-shadow(0 18px 18px rgba(0,0,0,.35));
+    opacity:.95;
+    transform:translateX(0) translateY(0) rotate(0);
+    animation:planeFly 3.2s ease-in-out .15s forwards;
+  }
+  @keyframes planeFly{
+    0%   { transform:translateX(0) translateY(0) rotate(0deg); }
+    70%  { transform:translateX(115vw) translateY(-6vh) rotate(14deg); }
+    100% { transform:translateX(140vw) translateY(-10vh) rotate(18deg); opacity:0; }
+  }
+
+  /* Contenedor principal */
+  .wrap{
+    width:min(940px,92vw);
+    margin: clamp(20px, 4vh, 36px) auto 40px;
+  }
+  .card{
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:20px;
+  }
+  header.page{
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:14px;
+  }
+  header.page .brand{
+    width:36px; height:36px; display:grid; place-items:center;
+    background:var(--glass-strong);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:10px;
+  }
+  header.page h1{
+    font-size:clamp(20px,3.4vw,28px);
+    margin:0;
+    font-weight:800;
+    letter-spacing:.2px;
+  }
+  header.page p{
+    margin:2px 0 0; opacity:.9; font-size:.95rem;
+  }
+
+  /* Formulario */
   form{ margin-top:8px; }
-  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
   .grid-1{ display:grid; grid-template-columns:1fr; gap:14px; }
   @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+
   label{ font-weight:700; font-size:.92rem; margin-bottom:6px; display:block; }
-  input[type="text"], input[type="date"], select, textarea{ width:100%; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.28); outline:none; color:var(--text); background:rgba(255,255,255,.08);}
+  input[type="text"], input[type="date"], select, textarea{
+    width:100%;
+    padding:12px 12px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.28);
+    outline:none;
+    color: #003366; /* texto legible para select también */
+    background:rgba(255,255,255,.08);
+  }
+  select option {
+    color: #000; /* opciones negras */
+    background: #fff;
+  }
   textarea{ min-height:120px; resize:vertical; }
-  .terms{ background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:12px 14px; font-size:.92rem; line-height:1.35rem; }
+
+  .file{
+    border:1px dashed rgba(255,255,255,.35);
+    border-radius:12px;
+    padding:14px;
+    background:rgba(255,255,255,.06);
+  }
+
+  .terms{
+    background:rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:14px;
+    padding:12px 14px;
+    font-size:.92rem;
+    line-height:1.35rem;
+  }
   .terms p{ margin:.2rem 0 .6rem; }
   .terms .row{ display:flex; gap:8px; align-items:flex-start; }
   .terms input[type="checkbox"]{ margin-top:3px; }
+
   .actions{ margin-top:8px; }
-  button{ width:100%; padding:13px 16px; border:none; border-radius:12px; font-weight:800; letter-spacing:.3px; color:#0b1f16; background:linear-gradient(135deg,#e8ffb4,#8ef8c2); cursor:pointer; box-shadow:0 8px 18px rgba(0,0,0,.18); transition:transform .08s ease, filter .2s ease;}
-  button:hover{ filter:brightness(1.06); } button:active{ transform:translateY(1px) scale(.998); }
-  #overlay{ position:fixed; inset:0; display:none; background:rgba(0,0,0,.65); color:#fff; z-index:1000; align-items:center; justify-content:center; flex-direction:column; padding:20px; text-align:center; }
-  #progressWrap{ width:min(560px,86vw); margin-top:14px; background:#eaeaea; border-radius:10px; overflow:hidden; box-shadow:inset 0 0 8px rgba(0,0,0,.12); }
+  button{
+    width:100%;
+    padding:13px 16px;
+    border:none; border-radius:12px;
+    font-weight:800; letter-spacing:.3px;
+    color:#0b1f16;
+    background:linear-gradient(135deg,#e8ffb4,#8ef8c2);
+    cursor:pointer;
+    box-shadow:0 8px 18px rgba(0,0,0,.18);
+    transition:transform .08s ease, filter .2s ease;
+  }
+  button:hover{ filter:brightness(1.06); }
+  button:active{ transform:translateY(1px) scale(.998); }
+
+  /* Overlay de carga */
+  #overlay{
+    position:fixed; inset:0; display:none;
+    background:rgba(0,0,0,.65);
+    color:#fff; z-index:1000;
+    align-items:center; justify-content:center; flex-direction:column;
+    padding:20px; text-align:center;
+  }
+  #progressWrap{
+    width:min(560px,86vw); margin-top:14px;
+    background:#eaeaea; border-radius:10px; overflow:hidden;
+    box-shadow:inset 0 0 8px rgba(0,0,0,.12);
+  }
   #bar{ height:14px; width:0%; background:#00d2a0; transition:width .25s ease; }
   #percent{ margin-top:6px; font-size:.9rem; opacity:.9; }
 </style>
 </head>
 <body>
 
+<!-- Bienvenida -->
 <div id="welcomeOverlay">
   <div class="welcome-inner">
     <img src="Avion.png" class="plane" alt="Avión">
-    <h2 class="welcome-title">🍀 ¡Bienvenido al sistema IPO de Saviare LTDA!</h2>
+    <h2 class="welcome-title"><span class="clover">🍀</span> ¡Bienvenido al sistema IPO de Saviare LTDA!</h2>
   </div>
 </div>
 
 <div class="wrap">
-  <div class="card">
+  <!-- Encabezado -->
+  <div class="card" style="margin-bottom:14px;">
     <header class="page">
       <div class="brand" aria-hidden="true">🍀</div>
       <div>
@@ -63,6 +211,7 @@
     </header>
   </div>
 
+  <!-- Formulario -->
   <div class="card">
     <form id="ipoForm" novalidate>
       <div class="grid">
@@ -70,6 +219,7 @@
           <label for="fechaPeligro">Fecha del peligro</label>
           <input id="fechaPeligro" name="fechaPeligro" type="date" required />
         </div>
+
         <div>
           <label for="base">Base</label>
           <select id="base" name="base" required>
@@ -78,31 +228,38 @@
             <option value="Mitú">Mitú</option>
           </select>
         </div>
+
         <div class="grid-1">
           <label for="lugar">Lugar del peligro / fase de vuelo</label>
           <input id="lugar" name="lugar" type="text" placeholder="Ej: Plataforma / Rodaje / Despegue…" required />
         </div>
+
         <div>
           <label for="nombre">Nombre</label>
-          <input id="nombre" name="nombre" type="text" placeholder="Opcional" />
-          <label class="row"><input id="anon" type="checkbox"> Reportar como anónimo</label>
+          <input id="nombre" name="nombre" type="text" placeholder="Nombre completo" />
         </div>
+
         <div>
           <label for="cargo">Cargo</label>
           <input id="cargo" name="cargo" type="text" placeholder="Ej: Piloto / Técnico / Coordinador…" />
         </div>
+
         <div class="grid-1">
           <label for="descripcion">Descripción del peligro / error humano</label>
           <textarea id="descripcion" name="descripcion" placeholder="Describe lo ocurrido…" required></textarea>
         </div>
+
         <div class="grid-1">
           <label for="files">Evidencia (PDF/imagen/video, máx 10 MB c/u)</label>
-          <input id="files" name="files" type="file" multiple accept="image/*,application/pdf,video/*">
+          <div class="file">
+            <input id="files" name="files" type="file" multiple accept="image/*,application/pdf,video/*" />
+          </div>
         </div>
       </div>
 
-      <div class="terms">
+      <div class="terms" style="margin-top:10px;">
         <p>
+          <strong>Términos y condiciones:</strong><br>
           SAVIARE LTDA, promueve e incentiva los Informes de Peligros Operacional (IPO) de forma
           voluntaria y oportuna de cada una de las condiciones latentes de inseguridad y riesgos que
           puedan comprometer todas las actividades de seguridad operacional. Garantizando la
@@ -114,7 +271,7 @@
         </p>
         <div class="row">
           <input id="acepto" type="checkbox" required />
-          <label for="acepto">He leído y acepto los términos y condiciones.</label>
+          <label for="acepto" style="font-weight:600; margin:0;">He leído y acepto los términos y condiciones.</label>
         </div>
       </div>
 
@@ -125,76 +282,106 @@
   </div>
 </div>
 
-<div id="overlay">
-  <div>⏳ Subiendo archivos, por favor espera…</div>
+<!-- Overlay de carga -->
+<div id="overlay" role="alert" aria-live="polite">
+  <div>⏳ Enviando reporte…</div>
   <div id="progressWrap"><div id="bar"></div></div>
   <div id="percent">0%</div>
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbxk66ZbJrxJmUKJjCWdag4RYzqDdvXctSvHkQOvwsOn5OFGO_Oib-IhjixIiJQXrm9_/exec";
-const overlay = document.getElementById('overlay');
-const bar = document.getElementById('bar');
-const percent = document.getElementById('percent');
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxk66ZbJrxJmUKJjCWdag4RYzqDdvXctSvHkQOvwsOn5OFGO_Oib-IhjixIiJQXrm9_/exec";
+  const overlay = document.getElementById('overlay');
+  const bar = document.getElementById('bar');
+  const percent = document.getElementById('percent');
 
-setTimeout(() => {
-  const w = document.getElementById('welcomeOverlay');
-  if(w){ w.classList.add('fade-out'); setTimeout(()=> w.style.display='none',1000); }
-},2800);
+  // Bienvenida fade-out
+  const welcome = document.getElementById('welcomeOverlay');
+  setTimeout(() => {
+    if (welcome) {
+      welcome.classList.add('fade-out');
+      setTimeout(() => (welcome.style.display = 'none'), 900);
+    }
+  }, 2800);
+  setTimeout(() => { if (welcome) welcome.style.display = 'none'; }, 5000);
 
-document.getElementById('anon').addEventListener('change', e => {
-  const n = document.getElementById('nombre');
-  if(e.target.checked){ n.value=''; n.disabled=true; n.placeholder=''; n.style.background='#f2f2f2'; } 
-  else{ n.disabled=false; n.placeholder='Opcional'; n.style.background=''; }
-});
+  function showOverlay(){ overlay.style.display = 'flex'; }
+  function hideOverlay(){ overlay.style.display = 'none'; bar.style.width = '0%'; percent.textContent = '0%'; }
+  function setProgress(p){ bar.style.width = p + '%'; percent.textContent = p + '%'; }
 
-document.getElementById('ipoForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  if(!document.getElementById('acepto').checked){ alert('Debe aceptar los términos y condiciones.'); return; }
-
-  const form = e.target;
-  const filesInput = document.getElementById('files');
-  const anonimo = document.getElementById('anon').checked;
-  const nombreFinal = anonimo ? 'Anónimo' : form.nombre.value || '';
-
-  let totalSize=0; for(const f of filesInput.files) totalSize+=f.size;
-  if(totalSize>15*1024*1024){ alert('El total de adjuntos supera 15 MB.'); return; }
-
-  overlay.style.display='flex';
-  const files=[];
-  let uploaded=0;
-  for(const f of filesInput.files){
-    if(f.size>10*1024*1024){ alert(`El archivo "${f.name}" excede 10 MB y se omitirá.`); continue; }
-    const base64=await new Promise((resolve,reject)=>{
-      const reader=new FileReader();
-      reader.onload=()=>resolve(reader.result);
-      reader.onerror=reject;
-      reader.readAsDataURL(f);
+  function readFileAsBase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
-    uploaded+=f.size;
-    if(totalSize>0){ const pct=Math.round((uploaded/totalSize)*80); bar.style.width=pct+'%'; percent.textContent=pct+'%'; }
-    files.push({name:f.name,mimeType:f.type||'application/octet-stream',base64:base64.split(',')[1]});
   }
 
-  const payload={
-    fechaPeligro: form.fechaPeligro.value||'',
-    base: form.base.value||'',
-    lugar: form.lugar.value||'',
-    nombre: nombreFinal,
-    cargo: form.cargo.value||'',
-    descripcion: form.descripcion.value||'',
-    files
-  };
+  document.getElementById('ipoForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!document.getElementById('acepto').checked) {
+      alert('Debe aceptar los términos y condiciones.');
+      return;
+    }
 
-  bar.style.width='90%'; percent.textContent='90%';
-  try{ await fetch(scriptURL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}); }catch(err){ console.error(err); }
+    const form = e.target;
+    const filesInput = document.getElementById('files');
 
-  bar.style.width='100%'; percent.textContent='100%';
-  setTimeout(()=>{
-    overlay.style.display='none'; bar.style.width='0%'; percent.textContent='0%';
-    alert('✅ ¡Reporte enviado!'); form.reset(); document.getElementById('nombre').disabled=false; document.getElementById('nombre').placeholder='Opcional';
-  },700);
-});
+    let totalSize = 0;
+    for (const f of filesInput.files) totalSize += f.size;
+    if (totalSize > 15 * 1024 * 1024) {
+      alert('El total de adjuntos supera 15 MB.');
+      return;
+    }
+
+    showOverlay();
+
+    const files = [];
+    let uploaded = 0;
+    for (const f of filesInput.files) {
+      if (f.size > 10 * 1024 * 1024) {
+        alert(`El archivo "${f.name}" excede 10 MB y se omitirá.`);
+        continue;
+      }
+      const dataUrl = await readFileAsBase64(f);
+      files.push({
+        name: f.name,
+        mimeType: f.type || 'application/octet-stream',
+        base64: dataUrl.split(',')[1]
+      });
+      uploaded += f.size;
+      const pct = Math.min(80, Math.round((uploaded / Math.max(totalSize,1)) * 80));
+      setProgress(pct);
+    }
+
+    const payload = {
+      fechaPeligro: form.fechaPeligro.value || '',
+      lugar: form.lugar.value || '',
+      base: form.base.value || '',
+      nombre: form.nombre.value || '',
+      cargo: form.cargo.value || '',
+      descripcion: form.descripcion.value || '',
+      terminos: document.getElementById('acepto').checked ? 'Sí' : 'No',
+      files
+    };
+
+    setProgress(90);
+
+    try {
+      await fetch(scriptURL, { method:'POST', mode:'no-cors', body:JSON.stringify(payload) });
+      setProgress(100);
+      setTimeout(() => {
+        hideOverlay();
+        alert('✅ ¡Reporte enviado!');
+        form.reset();
+      }, 600);
+    } catch (err) {
+      console.error(err);
+      hideOverlay();
+      alert('❌ Error al enviar el reporte. Revisa tu conexión e inténtalo nuevamente.');
+    }
+  });
 </script>
 </body>
 </html>
