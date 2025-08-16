@@ -1,51 +1,85 @@
-<form id="miFormulario">
-  <label>Fecha del peligro:</label>
-  <input type="date" name="fechaPeligro" required><br><br>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Formulario de Peligros</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 30px; }
+  form { max-width: 400px; }
+  label { display: block; margin-top: 15px; }
+  input, textarea, select, button {
+    width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;
+  }
+  button { background: #28a745; color: white; border: none; cursor: pointer; }
+  button:hover { background: #218838; }
+</style>
+</head>
+<body>
 
-  <label>Lugar del peligro:</label>
-  <input type="text" name="lugar" required><br><br>
+<h2>Reporte de Peligro</h2>
+<form id="peligroForm">
+  <label>Fecha del peligro:
+    <input type="date" name="fechaIncidente" required>
+  </label>
+  
+  <label>Lugar del peligro / fase de vuelo:
+    <input type="text" name="lugar" required>
+  </label>
 
-  <label>Base:</label>
-  <input type="text" name="base"><br><br>
+  <label>Base:
+    <input type="text" name="base" required>
+  </label>
 
-  <label>Nombre:</label>
-  <input type="text" name="nombre"><br><br>
+  <label>Nombre:
+    <input type="text" name="nombre" required>
+  </label>
 
-  <label>Cargo:</label>
-  <input type="text" name="cargo"><br><br>
+  <label>Cargo:
+    <input type="text" name="cargo" required>
+  </label>
 
-  <label>Descripción:</label>
-  <textarea name="descripcion"></textarea><br><br>
+  <label>Descripción del peligro / error humano:
+    <textarea name="descripcion" rows="4" required></textarea>
+  </label>
 
   <button type="submit">Enviar</button>
 </form>
 
+<p id="resultado"></p>
+
 <script>
-document.getElementById("miFormulario").addEventListener("submit", async function(e) {
+document.getElementById('peligroForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  const datos = Object.fromEntries(new FormData(this).entries());
+  const data = {
+    fechaIncidente: this.fechaIncidente.value,
+    lugar: this.lugar.value,
+    base: this.base.value,
+    nombre: this.nombre.value,
+    cargo: this.cargo.value,
+    descripcion: this.descripcion.value
+  };
 
   try {
-    const respuesta = await fetch(
-      "https://script.google.com/macros/s/AKfycbwYM-aswlaNTOCCl87x5vsfI7k0ZNlHBAhqrtwJG0MOzvUBuDW2tjOWXXb5xSGw7QO7/exec",
-      {
-        method: "POST",
-        body: JSON.stringify(datos),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const response = await fetch("https://script.google.com/macros/s/AKfycbwYM-aswlaNTOCCl87x5vsfI7k0ZNlHBAhqrtwJG0MOzvUBuDW2tjOWXXb5xSGw7QO7/exec", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
-    const json = await respuesta.json();
-
-    if (json.status === "ok") {
-      alert("Datos enviados correctamente");
+    const result = await response.json();
+    if (result.status === "ok") {
+      document.getElementById('resultado').textContent = "✅ Datos enviados correctamente";
       this.reset();
     } else {
-      alert("Error: " + json.message);
+      document.getElementById('resultado').textContent = "❌ Error: " + result.message;
     }
-  } catch (error) {
-    alert("Error de conexión: " + error);
+  } catch (err) {
+    document.getElementById('resultado').textContent = "⚠️ Error de conexión";
   }
 });
 </script>
+
+</body>
+</html>
